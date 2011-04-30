@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.
  *
- * @category  XML
+ * @category  Structures
  * @package   index
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2011 Markus Malkusch
@@ -38,7 +38,7 @@ use de\malkusch\index as index;
 /**
  * Counts the splits in a binary search
  *
- * @category XML
+ * @category Structures
  * @package  index
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  GPL 3

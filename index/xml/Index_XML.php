@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.
  *
- * @category  XML
+ * @category  Structures
  * @package   index
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2011 Markus Malkusch
@@ -53,7 +53,7 @@ namespace de\malkusch\index;
  * </index>
  * </code>
  *
- * @category XML
+ * @category Structures
  * @package  index
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  GPL 3
