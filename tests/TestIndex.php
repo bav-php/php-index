@@ -56,23 +56,22 @@ class TestIndex extends AbstractTest
     /**
      * Tests the an index is search with O(log(n))
      *
-     * @param Index $index     Index
-     * @param int   $indexSize Index size
+     * @param IndexGenerator $generator Index generator
      *
      * @return void
      * @dataProvider provideTestComplexity
      */
     public function testComplexity(
-        index\Index $index,
-        $indexSize
+        IndexGenerator $generator
     ) {
-        for ($i = 0; $i < $indexSize; $i++) {
+        $index = $generator->getIndex();
+        for ($i = 0; $i < $generator->getIndexLength(); $i++) {
             $counter = new SplitCounter();
             $index->search($i);
             $counter->stopCounting();
 
             $this->assertLessThan(
-                \log($indexSize, 2) * 2,
+                \log($generator->getIndexLength(), 2) * 2,
                 \count($counter)
             );
 
@@ -87,19 +86,16 @@ class TestIndex extends AbstractTest
     public function provideTestComplexity()
     {
         $cases  = array();
-        $helper = new TestHelper();
 
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 10000, true),
-                10000
-            );
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(true);
+        $cases[] = array($generator);
 
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 10000, false),
-                10000
-            );
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(false);
+        $cases[] = array($generator);
 
         return $cases;
     }

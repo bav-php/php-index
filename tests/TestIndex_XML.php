@@ -57,16 +57,15 @@ class TestIndex_XML extends AbstractTest
     /**
      * Tests finding every key
      *
-     * @param Index $index
-     * @param int   $indexSize
+     * @param IndexGenerator_XML $generator Index generator
      *
      * @dataProvider provideTestSearch
      */
     public function testSearch(
-        index\Index_XML $index,
-        $indexSize
+        IndexGenerator_XML $generator
     ) {
-        for ($key = 0; $key < $indexSize; $key++) {
+        $index = $generator->getIndex();
+        for ($key = 0; $key < $generator->getIndexLength(); $key++) {
             $data = $index->search($key);
             $xml  = new \SimpleXMLElement($data);
 
@@ -84,11 +83,11 @@ class TestIndex_XML extends AbstractTest
             // Data
             $this->assertEquals(
                 1,
-                count($xml->{TestHelper::XML_ELEMENT_PAYLOAD})
+                count($xml->{IndexGenerator_XML::ELEMENT_PAYLOAD})
             );
             $this->assertRegExp(
                 "/^data_{$key}_.+$/",
-                (string) $xml->{TestHelper::XML_ELEMENT_PAYLOAD}[0]
+                (string) $xml->{IndexGenerator_XML::ELEMENT_PAYLOAD}[0]
             );
 
         }
@@ -102,30 +101,26 @@ class TestIndex_XML extends AbstractTest
     public function provideTestSearch()
     {
         $cases  = array();
-        $helper = new TestHelper();
 
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 10000, true),
-                10000
-            );
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(true);
+        $cases[] = array($generator);
 
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 10000, false),
-                10000
-            );
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(false);
+        $cases[] = array($generator);
 
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 1, true),
-                1
-            );
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 1, false),
-                1
-            );
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(1);
+        $generator->formatOutput(true);
+        $cases[] = array($generator);
+
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(1);
+        $generator->formatOutput(false);
+        $cases[] = array($generator);
 
         return $cases;
     }
