@@ -72,7 +72,7 @@ class TestIndex extends AbstractTest
             $counter->stopCounting();
 
             $this->assertLessThan(
-                log($indexSize, 2) * 2,
+                \log($indexSize, 2) * 2,
                 \count($counter)
             );
 

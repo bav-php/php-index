@@ -54,7 +54,7 @@ class SplitCounter implements \Countable
      */
     CONTEXT_SPLITTING = "splitting",
     /**
-     * Splitting context
+     * Searching context
      */
     CONTEXT_SEARCHING = "searching";
 
@@ -91,7 +91,7 @@ class SplitCounter implements \Countable
                 $this->_count++;
 
             }
-        } elseif (\strpos($backtrace[2]["function"], "split") === false) {
+        } elseif (\strpos($backtrace[1]["function"], "search") !== false) {
             $this->_context = self::CONTEXT_SEARCHING;
 
         }
