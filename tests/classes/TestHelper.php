@@ -49,13 +49,35 @@ class TestHelper
 {
 
     const
-        /**
-         * Payload element
-         */
-        ELEMENT_PAYLOAD = "payload";
+    /**
+     * Payload element
+     */
+    XML_ELEMENT_PAYLOAD = "payload";
 
     /**
-     * Returns the path to a sample xml file
+     * Returns the path to the test indexes
+     *
+     * @return string
+     */
+    static public function getTestIndexPath()
+    {
+        return __DIR__ . "/../index/";
+    }
+
+    /**
+     * Returns the path to the test indexes which are dynamically created
+     *
+     * @return string
+     */
+    static private function _getTestIndexVarPath()
+    {
+        return self::getTestIndexPath() . "/var/";
+    }
+
+    /**
+     * Returns an XML index
+     *
+     * The index file will be created if it doesn't exist.
      *
      * @param Index_XML $index        Index
      * @param int       $indexSize    Elements in the index
@@ -71,8 +93,8 @@ class TestHelper
         $formatOutput = true
     ) {
         $file
-            = __DIR__
-            . "/../var/$element.$attribute-$indexSize-$formatOutput.xml";
+            = self::_getTestIndexVarPath()
+            . "/$element.$attribute-$indexSize-$formatOutput.xml";
 
         // reuse an existing file
         if (\file_exists($file)) {
@@ -96,7 +118,7 @@ class TestHelper
             $attribute->value = $i;
 
             // Append some payload
-            $payload = $document->createElement(self::ELEMENT_PAYLOAD);
+            $payload = $document->createElement(self::XML_ELEMENT_PAYLOAD);
             $container->appendChild($payload);
             $payload->appendChild(
                 $document->createCDATASection(\uniqid("data_{$i}_", true))

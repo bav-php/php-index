@@ -60,6 +60,57 @@ class TestIndex_XML extends \PHPUnit_Framework_TestCase
 {
 
     /**
+     * Tests the an index is search with O(log(n))
+     *
+     * @param Index_XML $index     Index
+     * @param int       $indexSize Index size
+     *
+     * @return void
+     * @dataProvider provideTestComplexity
+     */
+    public function testComplexity(
+        index\Index_XML $index,
+        $indexSize
+    ) {
+        for ($i = 0; $i < $indexSize; $i++) {
+            $counter = new SplitCounter();
+            $index->search($i);
+            $counter->stopCounting();
+
+            $this->assertLessThan(
+                log($indexSize, 2) * 2,
+                \count($counter)
+            );
+
+        }
+    }
+
+    /**
+     * Test cases for testComplexity()
+     *
+     * @return void
+     */
+    public function provideTestComplexity()
+    {
+        $cases  = array();
+        $helper = new TestHelper();
+
+        $cases[]
+            = array(
+                $helper->getIndex_XML("container", "index", 10000, true),
+                10000
+            );
+
+        $cases[]
+            = array(
+                $helper->getIndex_XML("container", "index", 10000, false),
+                10000
+            );
+
+        return $cases;
+    }
+
+    /**
      *
      * @param Index $index
      * @param int   $indexSize
@@ -86,10 +137,13 @@ class TestIndex_XML extends \PHPUnit_Framework_TestCase
             );
 
             // Data
-            $this->assertEquals(1, count($xml->payload));
+            $this->assertEquals(
+                1,
+                count($xml->{TestHelper::XML_ELEMENT_PAYLOAD})
+            );
             $this->assertRegExp(
                 "/^data_{$key}_.+$/",
-                (string) $xml->payload[0]
+                (string) $xml->{TestHelper::XML_ELEMENT_PAYLOAD}[0]
             );
 
         }
