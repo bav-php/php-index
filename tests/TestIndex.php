@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Defines the class TestIndex_XML
+ * Defines the class TestIndex
  *
  * PHP version 5
  *
@@ -40,7 +40,6 @@ use de\malkusch\index as index;
  */
 require_once __DIR__ . "/classes/AbstractTest.php";
 
-
 /**
  * Tests the xml index
  *
@@ -51,55 +50,41 @@ require_once __DIR__ . "/classes/AbstractTest.php";
  * @version  Release: 1.0
  * @link     http://php-index.malkusch.de/en/
  */
-class TestIndex_XML extends AbstractTest
+class TestIndex extends AbstractTest
 {
 
     /**
-     * Tests finding every key
+     * Tests the an index is search with O(log(n))
      *
-     * @param Index $index
-     * @param int   $indexSize
+     * @param Index $index     Index
+     * @param int   $indexSize Index size
      *
-     * @dataProvider provideTestSearch
+     * @return void
+     * @dataProvider provideTestComplexity
      */
-    public function testSearch(
-        index\Index_XML $index,
+    public function testComplexity(
+        index\Index $index,
         $indexSize
     ) {
-        for ($key = 0; $key < $indexSize; $key++) {
-            $data = $index->search($key);
-            $xml  = new \SimpleXMLElement($data);
+        for ($i = 0; $i < $indexSize; $i++) {
+            $counter = new SplitCounter();
+            $index->search($i);
+            $counter->stopCounting();
 
-            // Container
-            $this->assertEquals($index->getElement(), $xml->getName());
-
-            // Index
-            $attributes = $xml->attributes();
-            $this->assertTrue(isset($attributes[$index->getAttribute()]));
-            $this->assertEquals(
-                $key,
-                (string) $attributes[$index->getAttribute()]
-            );
-
-            // Data
-            $this->assertEquals(
-                1,
-                count($xml->{TestHelper::XML_ELEMENT_PAYLOAD})
-            );
-            $this->assertRegExp(
-                "/^data_{$key}_.+$/",
-                (string) $xml->{TestHelper::XML_ELEMENT_PAYLOAD}[0]
+            $this->assertLessThan(
+                log($indexSize, 2) * 2,
+                \count($counter)
             );
 
         }
     }
 
     /**
-     * Test cases for testSearch()
+     * Test cases for testComplexity()
      *
-     * @return array
+     * @return void
      */
-    public function provideTestSearch()
+    public function provideTestComplexity()
     {
         $cases  = array();
         $helper = new TestHelper();
@@ -114,17 +99,6 @@ class TestIndex_XML extends AbstractTest
             = array(
                 $helper->getIndex_XML("container", "index", 10000, false),
                 10000
-            );
-
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 1, true),
-                1
-            );
-        $cases[]
-            = array(
-                $helper->getIndex_XML("container", "index", 1, false),
-                1
             );
 
         return $cases;
