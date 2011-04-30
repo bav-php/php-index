@@ -54,7 +54,21 @@ class TestIndex extends AbstractTest
 {
 
     /**
-     * Tests the an index is search with O(log(n))
+     * Returns the expected complexity for a gernerated index
+     *
+     * The complexity is always O(log(n)).
+     *
+     * @param IndexGenerator $generator Index generator
+     *
+     * @return float
+     */
+    private function _getComplexity(IndexGenerator $generator)
+    {
+        return \log($generator->getIndexLength(), 2) * 2;
+    }
+
+    /**
+     * Tests that a successfull index search is in O(log(n))
      *
      * @param IndexGenerator $generator Index generator
      *
@@ -71,7 +85,7 @@ class TestIndex extends AbstractTest
             $counter->stopCounting();
 
             $this->assertLessThan(
-                \log($generator->getIndexLength(), 2) * 2,
+                $this->_getComplexity($generator),
                 \count($counter)
             );
 
@@ -95,6 +109,69 @@ class TestIndex extends AbstractTest
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
         $generator->formatOutput(false);
+        $cases[] = array($generator);
+
+        return $cases;
+    }
+
+    /**
+     * Tests that failing terminates and its complexity
+     *
+     * @param IndexGenerator $generator Index generator
+     *
+     * @return void
+     * @dataProvider provideTestFailSearch
+     */
+    public function testFailSearch(
+        IndexGenerator $generator
+    ) {
+        $index = $generator->getIndex();
+
+        $index->search(9999);
+
+        $start = $generator->getMinimum() - 1;
+        $end   = $generator->getMaximum() + 2 * $generator->getStepSize();
+        $stepSize = $generator->getStepSize();
+        for ($key = $start; $key <= $end; $key += 1) {
+            if ($generator->isKey($key)) {
+                continue;
+                
+            }
+            $counter = new SplitCounter();
+            try {
+                $index->search($key);
+                $this->fail("Positive search not expected");
+
+            } catch (index\IndexException_NotFound $e) {
+                $counter->stopCounting();
+                $this->assertLessThan(
+                    $this->_getComplexity($generator),
+                    \count($counter)
+                );
+
+            }
+        }
+    }
+
+    /**
+     * Test cases for testFailSearch()
+     *
+     * @return void
+     */
+    public function provideTestFailSearch()
+    {
+        $cases  = array();
+
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(true);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10000);
+        $generator->formatOutput(false);
+        $generator->setStepSize(2);
         $cases[] = array($generator);
 
         return $cases;

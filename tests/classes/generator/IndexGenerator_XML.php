@@ -135,7 +135,7 @@ class IndexGenerator_XML extends IndexGenerator
     {
         return
             "$this->_element.$this->_attribute-{$this->getIndexLength()}"
-            . "-$this->_formatOutput.xml";
+            . "-{$this->getStepSize()}-$this->_formatOutput.xml";
     }
 
     /**
@@ -154,7 +154,7 @@ class IndexGenerator_XML extends IndexGenerator
         $root = $document->createElement("document");
         $document->appendChild($root);
 
-        for ($i = 0; $i < $this->getIndexLength(); $i++) {
+        for ($i = 0; $i < $this->getIndexLength(); $i += $this->getStepSize()) {
             $container = $document->createElement($this->_element);
             $root->appendChild($container);
 

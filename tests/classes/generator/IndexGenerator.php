@@ -52,6 +52,10 @@ abstract class IndexGenerator
     /**
      * @var int
      */
+    $_stepSize = 1,
+    /**
+     * @var int
+     */
     $_length = 0;
 
     /**
@@ -99,6 +103,31 @@ abstract class IndexGenerator
     }
 
     /**
+     * Sets the size of one step in the sorted index.
+     *
+     * E.g. step size "1" generates the index 0,1,2,3…,
+     * a step size "2" produces the index 0,2,4,6,….
+     *
+     * @param int $stepSize Step size
+     *
+     * @return void
+     */
+    public function setStepSize($stepSize)
+    {
+        $this->_stepSize = $stepSize;
+    }
+
+    /**
+     * Gets the size of one step in the sorted index.
+     *
+     * @return int
+     */
+    public function getStepSize()
+    {
+        return $this->_stepSize;
+    }
+
+    /**
      * Sets the index length
      *
      * @param int $length Index length
@@ -118,6 +147,43 @@ abstract class IndexGenerator
     public function getIndexLength()
     {
         return $this->_length;
+    }
+
+    /**
+     * Returns the lowest key
+     *
+     * @return int
+     */
+    public function getMinimum()
+    {
+        return 0;
+    }
+
+    /**
+     * Returns the highest key
+     *
+     * @return int
+     */
+    public function getMaximum()
+    {
+        return $this->_length * $this->_stepSize - $this->_stepSize;
+    }
+
+    /**
+     * Returns if the key is in the index
+     *
+     * @param mixed $key Key
+     *
+     * @return bool
+     */
+    public function isKey($key)
+    {
+        if ($key < $this->getMinimum() || $key > $this->getMaximum()) {
+            return false;
+
+        }
+        $offset = $this->getMinimum() % $this->_stepSize;
+        return $key % $this->_stepSize == $offset;
     }
 
     /**
