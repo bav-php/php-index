@@ -5,6 +5,11 @@
 /**
  * Defines the class Index
  *
+ * This class is only an abstract index. You need to use the appropriate
+ * implementation which fits your needs. Currently these implementations exists:
+ *
+ * Index_XML - Index is the attribute of a XML container
+ *
  * PHP version 5
  *
  * LICENSE: This program is free software: you can redistribute it and/or modify
@@ -27,6 +32,7 @@
  * @license   GPL 3
  * @version   SVN: $Id$
  * @link      http://php-index.malkusch.de/en/
+ * @see       Index_XML
  */
 
 /**

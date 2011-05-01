@@ -32,10 +32,8 @@
  * @link      http://php-index.malkusch.de/en/
  */
 
-
 // Set the namespace
 namespace de\malkusch\index;
-
 
 try  {
     /**
