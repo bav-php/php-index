@@ -112,7 +112,8 @@ abstract class IndexGenerator
      */
     protected function generateData($key)
     {
-        return "data_{$key}_" . \str_repeat(".", 1024 % $key) . "$";
+
+        return "data_{$key}_" . \str_repeat(".", $key % 1024) . "$";
     }
 
     /**
