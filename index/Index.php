@@ -29,7 +29,7 @@
  * @package   index
  * @author    Markus Malkusch <markus@malkusch.de>
  * @copyright 2011 Markus Malkusch
- * @license   GPL 3
+ * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   SVN: $Id$
  * @link      http://php-index.malkusch.de/en/
  * @see       Index_XML
@@ -50,7 +50,7 @@ namespace de\malkusch\index;
  * @category Structures
  * @package  index
  * @author   Markus Malkusch <markus@malkusch.de>
- * @license  GPL 3
+ * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version  Release: 1.0
  * @link     http://php-index.malkusch.de/en/
  */
