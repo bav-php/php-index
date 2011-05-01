@@ -79,9 +79,9 @@ class TestIndex extends AbstractTest
         IndexGenerator $generator
     ) {
         $index = $generator->getIndex();
-        for ($i = 0; $i < $generator->getIndexLength(); $i++) {
+        for ($key = 0; $key < $generator->getIndexLength(); $key++) {
             $counter = new SplitCounter();
-            $index->search($i);
+            $index->search($key);
             $counter->stopCounting();
 
             $this->assertLessThan(
@@ -126,9 +126,6 @@ class TestIndex extends AbstractTest
         IndexGenerator $generator
     ) {
         $index = $generator->getIndex();
-
-        $index->search(9999);
-
         $start = $generator->getMinimum() - 1;
         $end   = $generator->getMaximum() + 2 * $generator->getStepSize();
         $stepSize = $generator->getStepSize();

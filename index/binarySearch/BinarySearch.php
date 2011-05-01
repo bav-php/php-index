@@ -167,7 +167,8 @@ class BinarySearch
         if ($foundKeys[0]->getKey() > $key) {
             $this->_range->splitLeft();
             // Set the last read flag
-            if ($this->_range->getLength() <= $readLength) {
+            // +1 because of (int) conversion
+            if ($this->_range->getLength() <= $readLength + 1) {
                 $this->_isLastData = true;
 
             }
@@ -181,7 +182,8 @@ class BinarySearch
         if ($foundKeys[\count($foundKeys) - 1]->getKey() < $key) {
             $this->_range->splitRight();
             // Set the last read flag
-            if ($this->_range->getLength() <= $readLength) {
+            // +1 because of (int) conversion
+            if ($this->_range->getLength() <= $readLength + 1) {
                 $this->_isLastData = true;
 
             }
