@@ -75,6 +75,7 @@ abstract class Parser
      *
      * @return string
      * @see Parser::parseKeys()
+     * @throws IndexException_ReadData
      */
     abstract public function getData($offset);
 

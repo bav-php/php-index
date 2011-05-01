@@ -79,6 +79,9 @@ class Index_XML extends Index
      * @param string $file      Index file
      * @param string $element   Container name
      * @param string $attribute Index attribute name
+     *
+     * @throws IndexException_IO_FileExists
+     * @throws IndexException_IO
      */
     public function __construct($file, $element, $attribute)
     {

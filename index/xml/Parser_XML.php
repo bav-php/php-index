@@ -109,6 +109,7 @@ class Parser_XML extends Parser
      * @param int $offset Offset of the XML container
      *
      * @return string
+     * @throws IndexException_ReadData
      */
     public function getData($offset)
     {

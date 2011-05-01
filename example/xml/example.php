@@ -76,8 +76,16 @@ try  {
      */
     $data = $index->search(12345);
 
+// Key wasn't found
 } catch (IndexException_NotFound $e) {
-    // Key wasn't found
+    echo $e->getMessage(), "\n";
+
+// IO Error during opening or reading the index
+} catch (IndexException_IO $e) {
+    echo $e->getMessage(), "\n";
+
+// Error while reading found data
+} catch (IndexException_ReadData $e) {
     echo $e->getMessage(), "\n";
 
 }

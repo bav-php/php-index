@@ -101,6 +101,7 @@ abstract class Index
      *
      * @return string
      * @throws IndexException_NotFound
+     * @throws IndexException_ReadData
      */
     public function search($key)
     {
