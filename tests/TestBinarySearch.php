@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Defines the class AllTests
+ * Defines the class TestBinarySearch
  *
  * PHP version 5
  *
@@ -26,9 +26,15 @@
  * Namespace
  */
 namespace de\malkusch\index\test;
+use de\malkusch\index as index;
 
 /**
- * Test suite with all tests
+ * Includes
+ */
+require_once __DIR__ . "/classes/AbstractTest.php";
+
+/**
+ * Tests the class BinarySearch
  *
  * @category Structures
  * @package  index
@@ -36,24 +42,32 @@ namespace de\malkusch\index\test;
  * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version  Release: 1.0
  * @link     http://php-index.malkusch.de/en/
+ * @see      BinarySearch
  */
-class AllTests extends \PHPUnit_Framework_TestSuite
+class TestBinarySearch extends AbstractTest
 {
 
     /**
-     * Returns all tests
+     * Tests increasing the sector count on large containers
      *
-     * @return AllTests
+     * @return void
      */
-    static public function suite()
+    public function testIncreaseSectorCount()
     {
-        $suite = new self();
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(100);
+        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
 
-        $suite->addTestFile(__DIR__ . "/TestBinarySearch.php");
-        $suite->addTestFile(__DIR__ . "/TestIndex.php");
-        $suite->addTestFile(__DIR__ . "/TestIndex_XML.php");
+        $index = $generator->getIndex();
+        $binarySearch = new index\BinarySearch($index);
+        $binarySearch->search(3);
 
-        return $suite;
+        $reflectedReadSectorCount
+            = new \ReflectionProperty($binarySearch, "_readSectorCount");
+        $reflectedReadSectorCount->setAccessible(true);
+        $readSectorCount = $reflectedReadSectorCount->getValue($binarySearch);
+
+        $this->assertGreaterThanOrEqual(3, $readSectorCount);
     }
 
 }

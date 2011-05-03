@@ -54,4 +54,28 @@ $autoloader->register();
 abstract class AbstractTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Asserts the complexity for an index
+     *
+     * The complexity is always O(log(n)).
+     *
+     * @param IndexGenerator $generator Index generator
+     * @param SplitCounter   $counter   Split counter in binary search
+     *
+     * @return float
+     */
+    protected function assertComplexity(
+        IndexGenerator $generator,
+        SplitCounter $counter
+    ) {
+        if (\count($counter) == 0) {
+            return;
+            
+        }
+        $this->assertLessThan(
+            \log($generator->getIndexLength(), 2) * 2,
+            \count($counter)
+        );
+    }
+
 }

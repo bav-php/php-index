@@ -47,60 +47,79 @@ class TestIndex extends AbstractTest
 {
 
     /**
-     * Returns the expected complexity for a gernerated index
+     * Tests searching in the index and its complexity
      *
-     * The complexity is always O(log(n)).
-     *
-     * @param IndexGenerator $generator Index generator
-     *
-     * @return float
-     */
-    private function _getComplexity(IndexGenerator $generator)
-    {
-        return \log($generator->getIndexLength(), 2) * 2;
-    }
-
-    /**
-     * Tests that a successfull index search is in O(log(n))
-     *
-     * @param IndexGenerator $generator Index generator
+     * @param IndexGenerator $generator  Index generator
+     * @param bool           $reuseIndex Index will be reused
      *
      * @return void
-     * @dataProvider provideTestComplexity
+     * @dataProvider provideTestSearch
      */
-    public function testComplexity(
-        IndexGenerator $generator
+    public function testSearch(
+        IndexGenerator $generator,
+        $reuseIndex = true
     ) {
         $index = $generator->getIndex();
         for ($key = 0; $key < $generator->getIndexLength(); $key++) {
-            $counter = new SplitCounter();
-            $index->search($key);
-            $counter->stopCounting();
+            if (! $reuseIndex) {
+                $index = $generator->getIndex();
 
-            $this->assertLessThan(
-                $this->_getComplexity($generator),
-                \count($counter)
+            }
+            $counter = new SplitCounter();
+            $data    = $index->search($key);
+            $counter->stopCounting();
+            $this->assertComplexity($generator, $counter);
+            $this->assertRegExp(
+                '/data_' . $key . '_.*\$/s',
+                $data
             );
 
         }
     }
 
     /**
-     * Test cases for testComplexity()
+     * Test cases for testSearch()
      *
-     * @return void
+     * @return Array
+     * @see TestIndex::testSearch()
      */
-    public function provideTestComplexity()
+    public function provideTestSearch()
     {
         $cases  = array();
 
+        // Large Container
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(100);
+        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
+        $cases[] = array($generator);
+
+        // Large Container, with new index each key
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(100);
+        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
+        $cases[] = array($generator, false);
+
+        // Large index
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
         $generator->formatOutput(true);
         $cases[] = array($generator);
 
+        // Index in one line
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
+        $generator->formatOutput(false);
+        $cases[] = array($generator);
+
+        // Index has only one element
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(1);
+        $generator->formatOutput(true);
+        $cases[] = array($generator);
+
+        // Index has only one element and is only one line
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(1);
         $generator->formatOutput(false);
         $cases[] = array($generator);
 
@@ -134,10 +153,7 @@ class TestIndex extends AbstractTest
 
             } catch (index\IndexException_NotFound $e) {
                 $counter->stopCounting();
-                $this->assertLessThan(
-                    $this->_getComplexity($generator),
-                    \count($counter)
-                );
+                $this->assertComplexity($generator, $counter);
 
             }
         }

@@ -45,6 +45,10 @@ abstract class IndexGenerator
     /**
      * @var int
      */
+    $_minDataSize = 1,
+    /**
+     * @var int
+     */
     $_stepSize = 1,
     /**
      * @var int
@@ -96,6 +100,18 @@ abstract class IndexGenerator
     }
 
     /**
+     * Sets the minimum size for data in the index
+     *
+     * @param int $size Data size
+     *
+     * @return void
+     */
+    public function setMinimumDataSize($size)
+    {
+        $this->_minDataSize = $size;
+    }
+
+    /**
      * Generates data with the pattern ^data_{$key}_\.*\$$
      *
      * Data has different length. Data could be i.e.
@@ -112,8 +128,8 @@ abstract class IndexGenerator
      */
     protected function generateData($key)
     {
-
-        return "data_{$key}_" . \str_repeat(".", $key % 1024) . "$";
+        $filler = \str_repeat(".", $this->_minDataSize + ($key % 1024));
+        return "data_{$key}_{$filler}$";
     }
 
     /**
