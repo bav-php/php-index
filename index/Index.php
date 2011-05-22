@@ -34,6 +34,13 @@
 namespace de\malkusch\index;
 
 /**
+ * Autoloader
+ *
+ * @see http://php-autoloader.malkusch.de
+ */
+require_once __DIR__ . "/autoloader/autoloader.php";
+
+/**
  * Index
  *
  * The index does a binary search on a key. That means that the data needs to

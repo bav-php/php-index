@@ -28,20 +28,10 @@
 // Set the namespace
 namespace de\malkusch\index;
 
+// Include the index and its autoloader
+require_once __DIR__ . "/../../index/Index.php";
+
 try  {
-    /**
-     * Setup up an autoloader which finds the index classes automatically.
-     * This autoloader implementation is only a recommendation. You can use
-     * any autoloader which will find the classes.
-     *
-     * @see http://php-autoloader.malkusch.de
-     */
-    require "autoloader/Autoloader.php";
-    \Autoloader::getRegisteredAutoloader()->remove();
-    $autoloader = new \Autoloader(__DIR__ . "/../..");
-    $autoloader->register();
-
-
     // Define the index
     $index
         = new Index_XML(

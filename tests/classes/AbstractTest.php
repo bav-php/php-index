@@ -29,14 +29,10 @@ namespace de\malkusch\index\test;
 use de\malkusch\index as index;
 
 /**
- * Autoloader
- *
- * @see http://php-autoloader.malkusch.de
+ * Setup autoloader
  */
-require "autoloader/Autoloader.php";
-\Autoloader::getRegisteredAutoloader()->remove();
-$autoloader = new \Autoloader(__DIR__ . "/../..");
-$autoloader->register();
+require_once __DIR__ . "/autoloader/autoloader.php";
+require_once __DIR__ . "/../../index/Index.php";
 
 
 /**
