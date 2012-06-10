@@ -23,6 +23,8 @@ return array(
     'de\malkusch\index\parser_xml' => '../xml/Parser_XML.php',
     'de\malkusch\index\binarysearch' => '../binarySearch/BinarySearch.php',
     'de\malkusch\index\indexexception' => '../exceptions/IndexException.php',
+    'de\malkusch\index\index_fixedsize' => '../fixedSize/Index_FixedSize.php',
+    'de\malkusch\index\parser_fixedsize' => '../fixedSize/Parser_FixedSize.php',
     'de\malkusch\index\indexexception_io' => '../exceptions/IndexException_IO.php',
     'de\malkusch\index\indexexception_notfound' => '../exceptions/IndexException_NotFound.php',
     'de\malkusch\index\indexexception_readdata' => '../exceptions/IndexException_ReadData.php',
