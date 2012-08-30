@@ -67,6 +67,8 @@ class TestIndex extends AbstractTest
             }
             $counter = new SplitCounter();
             $data    = $index->search($key);
+            $this->assertNotNull($data);
+            
             $counter->stopCounting();
             $this->assertComplexity($generator, $counter);
             $this->assertRegExp(
@@ -92,19 +94,19 @@ class TestIndex extends AbstractTest
         $generator->setIndexLength(100);
         $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
         $cases[] = array($generator);
-
+        
         // Large Container, with new index each key
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(100);
         $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
         $cases[] = array($generator, false);
-
+        
         // Large index
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
         $generator->formatOutput(true);
         $cases[] = array($generator);
-
+        
         // Index in one line
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
@@ -116,7 +118,7 @@ class TestIndex extends AbstractTest
         $generator->setIndexLength(1);
         $generator->formatOutput(true);
         $cases[] = array($generator);
-
+        
         // Index has only one element and is only one line
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(1);
@@ -140,22 +142,19 @@ class TestIndex extends AbstractTest
         $index = $generator->getIndex();
         $start = $generator->getMinimum() - 1;
         $end   = $generator->getMaximum() + 2 * $generator->getStepSize();
-        $stepSize = $generator->getStepSize();
         for ($key = $start; $key <= $end; $key += 1) {
             if ($generator->isKey($key)) {
                 continue;
                 
             }
             $counter = new SplitCounter();
-            try {
-                $index->search($key);
-                $this->fail("Positive search not expected");
+            
+            $data = $index->search($key);
+            $this->assertNull($data);
+                
+            $counter->stopCounting();
+            $this->assertComplexity($generator, $counter);
 
-            } catch (index\IndexException_NotFound $e) {
-                $counter->stopCounting();
-                $this->assertComplexity($generator, $counter);
-
-            }
         }
     }
 
@@ -167,6 +166,25 @@ class TestIndex extends AbstractTest
     public function provideTestFailSearch()
     {
         $cases  = array();
+        
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(10);
+        $generator->formatOutput(true);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+        
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(100);
+        $generator->formatOutput(true);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+        
+        $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(1000);
+        $generator->formatOutput(true);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+
 
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);

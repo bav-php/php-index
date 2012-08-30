@@ -85,10 +85,11 @@ class BinarySearch
     /**
      * Returns the offset of a container for the searched key
      *
+     * Returns NULL if the key wasn't found.
+     * 
      * @param string $key Key
      *
      * @return int
-     * @throws IndexException_NotFound Key wasn't found
      * @throws IndexException_IO
      */
     public function search($key)
@@ -115,7 +116,7 @@ class BinarySearch
         // No data was read
         if ($data === FALSE) {
             if (\feof($this->_filePointer)) {
-                throw new IndexException_NotFound("Did not find '$key'");
+                return NULL;
 
             } else {
                 throw new IndexException_IO("Could not read file");
@@ -131,7 +132,7 @@ class BinarySearch
         if (empty($foundKeys)) {
             // No more data to read
             if (\strlen($data) < $readLength) {
-                throw new IndexException_NotFound("Did not find '$key'");
+                return NULL;
 
             // Too little sectors were read
             } else {
@@ -152,7 +153,7 @@ class BinarySearch
 
         // Stop searching
         if ($this->_range->getLength() <= $readLength) {
-            throw new IndexException_NotFound("Did not find '$key'");
+            return NULL;
 
         }
 
@@ -187,7 +188,7 @@ class BinarySearch
         }
 
         // Not found
-        throw new IndexException_NotFound("Did not find '$key'");
+        return NULL;
     }
 
 }

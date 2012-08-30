@@ -20,5 +20,6 @@ return array(
     'de\malkusch\index\test\indexgenerator' => '../generator/IndexGenerator.php',
     'de\malkusch\index\test\indextestexception' => '../exceptions/IndexTestException.php',
     'de\malkusch\index\test\indexgenerator_xml' => '../generator/IndexGenerator_XML.php',
+    'de\malkusch\index\test\indexgenerator_fixedsize' => '../generator/IndexGenerator_FixedSize.php',
     'de\malkusch\index\test\indextestexception_createfile' => '../exceptions/IndexTestException_CreateFile.php',
 );

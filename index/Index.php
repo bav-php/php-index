@@ -101,18 +101,23 @@ abstract class Index
     }
 
     /**
-     * Searches for the container with that keyword
+     * Searches for the container with that key
      *
+     * Returns NULL if the key wasn't found.
+     * 
      * @param string $key Key in the index
      *
      * @return string
-     * @throws IndexException_NotFound
      * @throws IndexException_ReadData
      */
     public function search($key)
     {
         $binarySearch = new BinarySearch($this);
         $offset = $binarySearch->search($key);
+        if ($offset == NULL) {
+            return NULL;
+            
+        }
         return $this->getParser()->getData($offset);
     }
 
