@@ -74,7 +74,19 @@ class IndexGenerator_FixedSize extends IndexGenerator
     {
         $this->_indexFieldLength = $indexFieldLength;
     }
-
+    
+    /**
+     * Returns the length of the index field
+     * 
+     * @return int
+     */
+    public function getIndexFieldLength()
+    {
+        return $this->_indexFieldLength < strlen($this->getMaximum())
+            ? strlen($this->getMaximum())
+            : $this->_indexFieldLength;
+    }
+    
     /**
      * Creates a new Index file
      *
@@ -85,11 +97,6 @@ class IndexGenerator_FixedSize extends IndexGenerator
      */
     protected function createIndexFile($file)
     {
-        $minimumLength = strlen($this->getMaximum());
-        $indexFieldLength = $this->_indexFieldLength < $minimumLength
-                ? $minimumLength
-                : $this->_indexFieldLength;
-        
         $filepointer = @fopen($file, "w");
         if (!is_resource($filepointer)) {
             throw new IndexTestException_CreateFile(
@@ -109,7 +116,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
             $key < $this->getIndexLength();
             $key += $this->getStepSize()
         ) {
-            $indexKey = str_pad($key, $indexFieldLength);
+            $indexKey = str_pad($key, $this->getIndexFieldLength());
             $line = $padding.$indexKey.$this->generateData($key)."\n";
             
             $bytes = @fputs($filepointer, $line);
@@ -137,7 +144,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
     protected function createIndex($file)
     {
         return new index\Index_FixedSize(
-            $file, $this->_indexFieldOffset, $this->_indexFieldLength
+            $file, $this->_indexFieldOffset, $this->getIndexFieldLength()
         );
     }
     
@@ -151,7 +158,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
         return sprintf(
             "%d.%d-%d-%d.txt",
             $this->_indexFieldOffset,
-            $this->_indexFieldLength,
+            $this->getIndexFieldLength(),
             $this->getIndexLength(),
             $this->getStepSize()
         );

@@ -98,7 +98,7 @@ abstract class IndexGenerator
     {
         return self::getTestIndexPath() . "/var/";
     }
-
+    
     /**
      * Sets the minimum size for data in the index
      *

@@ -34,7 +34,7 @@ use de\malkusch\index as index;
 require_once __DIR__ . "/classes/AbstractTest.php";
 
 /**
- * Tests the xml index
+ * Tests an index
  *
  * @category Structures
  * @package  index
@@ -95,8 +95,18 @@ class TestIndex extends AbstractTest
         $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
         $cases[] = array($generator);
         
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(100);
+        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
+        $cases[] = array($generator);
+        
         // Large Container, with new index each key
         $generator = new IndexGenerator_XML();
+        $generator->setIndexLength(100);
+        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
+        $cases[] = array($generator, false);
+        
+        $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(100);
         $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
         $cases[] = array($generator, false);
@@ -107,10 +117,18 @@ class TestIndex extends AbstractTest
         $generator->formatOutput(true);
         $cases[] = array($generator);
         
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
+        $cases[] = array($generator);
+        
         // Index in one line
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
         $generator->formatOutput(false);
+        $cases[] = array($generator);
+        
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
         $cases[] = array($generator);
 
         // Index has only one element
@@ -119,10 +137,18 @@ class TestIndex extends AbstractTest
         $generator->formatOutput(true);
         $cases[] = array($generator);
         
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(1);
+        $cases[] = array($generator);
+        
         // Index has only one element and is only one line
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(1);
         $generator->formatOutput(false);
+        $cases[] = array($generator);
+        
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(1);
         $cases[] = array($generator);
 
         return $cases;
@@ -173,9 +199,8 @@ class TestIndex extends AbstractTest
         $generator->setStepSize(2);
         $cases[] = array($generator);
         
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(100);
-        $generator->formatOutput(true);
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
         $generator->setStepSize(2);
         $cases[] = array($generator);
         
@@ -185,6 +210,10 @@ class TestIndex extends AbstractTest
         $generator->setStepSize(2);
         $cases[] = array($generator);
 
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(1000);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
 
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
@@ -192,9 +221,19 @@ class TestIndex extends AbstractTest
         $generator->setStepSize(2);
         $cases[] = array($generator);
 
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(10000);
         $generator->formatOutput(false);
+        $generator->setStepSize(2);
+        $cases[] = array($generator);
+
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
         $generator->setStepSize(2);
         $cases[] = array($generator);
 
