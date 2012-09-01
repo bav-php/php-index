@@ -61,14 +61,17 @@ class Parser_XML extends Parser
     }
 
     /**
-     * Finds keys in a data chunk
+     * Returns an array with FoundKey objects
      *
-     * @param string $data Data chunk of the index
+     * $data is parsed for keys. The found keys are returned.
+     *
+     * @param string $data   Parseable data
+     * @param int    $offset The position where the date came from
      *
      * @return array
      * @see FoundKey
      */
-    public function parseKeys($data)
+    public function parseKeys($data, $offset)
     {
         $element   = \preg_quote($this->getIndex()->getElement());
         $attribute = \preg_quote($this->getIndex()->getAttribute());

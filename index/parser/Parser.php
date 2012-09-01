@@ -53,12 +53,13 @@ abstract class Parser
      *
      * $data is parsed for keys. The found keys are returned.
      *
-     * @param string $data Parseble data
+     * @param string $data   Parseable data
+     * @param int    $offset The position where the date came from
      *
      * @return array
      * @see FoundKey
      */
-    abstract public function parseKeys($data);
+    abstract public function parseKeys($data, $offset);
     /**
      * Returns the data container which starts at $offset
      *

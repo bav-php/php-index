@@ -47,15 +47,17 @@ class Parser_FixedSize extends Parser
      *
      * $data is parsed for keys. The found keys are returned.
      *
-     * @param string $data Parseble data
+     * @param string $data   Parseable data
+     * @param int    $offset Position where the data came from
      *
      * @return array
      * @see FoundKey
      */
-    public function parseKeys($data)
+    public function parseKeys($data, $offset)
     {
         $pregExp = \sprintf(
-            '/\n.{%d}(.{%d})/',
+            "/(%s).{%d}(.{%d})/",
+            $offset == 0 ? '^|\n' : '\n',
             $this->getIndex()->getIndexFieldOffset(),
             $this->getIndex()->getIndexFieldLength()
         );
@@ -69,10 +71,10 @@ class Parser_FixedSize extends Parser
         $keys = array();
 
         foreach ($matches as $match) {
-            $keys[] = new FoundKey($match[0][1] + 1, $match[1][0]);
+            $keys[] = new FoundKey($match[0][1] + 1, $match[2][0]);
 
         }
-
+        
         return $keys;
     }
     
@@ -91,10 +93,10 @@ class Parser_FixedSize extends Parser
     {
         $filePointer = $this->getIndex()->getFilePointer();
         \fseek($filePointer, $offset);
-        $data = fgets($filePointer);
+        $data = \fgets($filePointer);
         
         if ($data === false) {
-            $error = error_get_last();
+            $error = \error_get_last();
             throw new IndexException_ReadData("Failed to read data: $error");
             
         }

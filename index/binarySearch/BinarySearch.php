@@ -126,7 +126,7 @@ class BinarySearch
         }
 
         // Parse the read data
-        $foundKeys = $this->_indexParser->parseKeys($data);
+        $foundKeys = $this->_indexParser->parseKeys($data, $readOffset);
 
         // No keys were found
         if (empty($foundKeys)) {
