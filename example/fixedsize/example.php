@@ -41,19 +41,27 @@ try  {
             8 // length of the index
         );
 
-    // Search the data for the key 10020500
-    $data = $index->search(10020500);
+    // Search the data for the key 10077777
+    $data = $index->search(10077777);
 
-    var_dump($data);
+    if ($data != NULL) {
+        \var_dump($data);
+        
+    } else {
+        echo "Didn't find key 10020500\n";
+        
+    }
 
-    /* Search the data for the nonexistend key 12345
-     * This will throw the IndexException_NotFound.
-     */
+    // Search the data for the nonexistend key 12345.
     $data = $index->search(12345);
-
-// Key wasn't found
-} catch (IndexException_NotFound $e) {
-    echo $e->getMessage(), "\n";
+    
+    if ($data != NULL) {
+        \var_dump($data);
+        
+    } else {
+        echo "Didn't find key 12345\n";
+        
+    }
 
 // IO Error during opening or reading the index
 } catch (IndexException_IO $e) {

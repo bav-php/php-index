@@ -42,24 +42,25 @@ try  {
 
     // Search the data for the key 1234
     $data = $index->search(1234);
+    
+    if ($data != NULL) {
+       /*
+        * The returned data is the XML as string. You can use SimpleXML to browse
+        * the data.
+        *
+        * @see SimpleXML
+        */
+        $xml = new \SimpleXMLElement($data);
+        \var_dump((string) $xml->payload);
+        
+    }
 
-    /**
-     * The returned data is the XML as string. You can use SimpleXML to browse
-     * the data.
-     *
-     * @see SimpleXML
-     */
-    $xml = new \SimpleXMLElement($data);
-    var_dump((string) $xml->payload);
-
-    /* Search the data for the nonexistend key 12345
-     * This will throw the IndexException_NotFound.
-     */
+    // Search the data for the nonexistend key 12345
     $data = $index->search(12345);
-
-// Key wasn't found
-} catch (IndexException_NotFound $e) {
-    echo $e->getMessage(), "\n";
+    if ($data == NULL) {
+        echo "Didn't find key 12345\n";
+        
+    }
 
 // IO Error during opening or reading the index
 } catch (IndexException_IO $e) {
