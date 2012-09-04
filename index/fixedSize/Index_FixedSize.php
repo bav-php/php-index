@@ -61,16 +61,16 @@ class Index_FixedSize extends Index
     /**
      * Sets the index file, index offset and the index length
      *
-     * @param string $file             Index file
+     * @param string $path             Index file
      * @param string $indexFieldOffset Index field offset
      * @param string $indexFieldLength Index field length
      *
      * @throws IndexException_IO_FileExists
      * @throws IndexException_IO
      */
-    public function __construct($file, $indexFieldOffset, $indexFieldLength)
+    public function __construct($path, $indexFieldOffset, $indexFieldLength)
     {
-        parent::__construct($file);
+        parent::__construct($path);
         
         $this->_indexFieldOffset = $indexFieldOffset;
         $this->_indexFieldLength = $indexFieldLength;

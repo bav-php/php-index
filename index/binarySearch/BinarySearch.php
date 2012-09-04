@@ -41,32 +41,21 @@ namespace de\malkusch\index;
  */
 class BinarySearch
 {
-
-    const
-    /**
-     * Sector size
-     */
-    SECTOR_SIZE = 512;
+    
+    const DIRECTION_FORWARD  = 1;
+    const DIRECTION_BACKWARD = -1;
 
     private
     /**
-     * @var bool
-     */
-    $_isLastData = false,
-    /**
      * @var int
      */
-    $_readSectorCount = 1,
+    $_readBlockCount = 1,
     /**
-     * @var Parser
+     * @var Index
      */
-    $_indexParser,
+    $_index,
     /**
-     * @var resource
-     */
-    $_filePointer,
-    /**
-     * @var Range
+     * @var ByteRange
      */
     $_range;
 
@@ -77,9 +66,8 @@ class BinarySearch
      */
     public function __construct(Index $index)
     {
-        $this->_indexParser  = $index->getParser();
-        $this->_range        = new Range(0, \filesize($index->getFile()));
-        $this->_filePointer  = $index->getFilePointer();
+        $this->_index = $index;
+        $this->_range = new ByteRange(0, $index->getFile()->getFileSize());
     }
 
     /**
@@ -94,29 +82,105 @@ class BinarySearch
      */
     public function search($key)
     {
-        $readLength = self::SECTOR_SIZE * $this->_readSectorCount;
-        if ($readLength >= $this->_range->getLength()) {
-            $readOffset = $this->_range->getOffset();
-
-        } else {
-            $readOffset = $this->_range->getMiddle();
-
+        // split the range
+        $splitOffset = $this->_getSplitOffset();
+        
+        // search right side
+        $keys = $this->_findFirstKeys($splitOffset, self::DIRECTION_FORWARD);
+        $foundKey = $this->_findKey($key, $keys);
+        if (! is_null($foundKey)) { // found
+            return $foundKey->getOffset();
+            
         }
-
-        // Read everything at the end
-        if ($this->_isLastData) {
-            $readOffset = $this->_range->getOffset();
-            $readLength = $this->_range->getLength();
-
+        
+        // If found keys are smaller continue in the right side
+        if (! empty($keys) && \end($keys)->getKey() < $key) {
+            $newOffset = $splitOffset + $this->_getReadLength();
+            $newLength = $this->_range->getLength()
+                       - $newOffset - $this->_range->getOffset();
+            $this->_range->setOffset($newOffset);
+            $this->_range->setLength($newLength);
+            return $this->search($key);
+            
         }
-
-        \fseek($this->_filePointer, $readOffset);
-        $data = \fread($this->_filePointer, $readLength);
-
-        // No data was read
+        
+        // Look at the key, which lies in both sides
+        $centerKeyOffset
+            = empty($keys)
+            ? $this->_range->getNextByteOffset()
+            : \reset($keys)->getOffset();
+        $keys
+            = $this->_findFirstKeys(
+                $centerKeyOffset,
+                self::DIRECTION_BACKWARD
+            );
+        $foundKey = $this->_findKey($key, $keys);
+        if (! is_null($foundKey)) { // found
+            return $foundKey->getOffset();
+            
+        }
+        // no more keys in the index
+        if (empty($keys) || \reset($keys)->getKey() < $key) {
+            return NULL;
+            
+        }
+        
+        // Finally continue searching in the left side
+        $newLength = \reset($keys)->getOffset() - $this->_range->getOffset() - 1;
+        if ($newLength >= $this->_range->getLength()) {
+            return NULL;
+            
+        }
+        $this->_range->setLength($newLength);
+        return $this->search($key);
+    }
+    
+    /**
+     * @param String $key
+     * @param array $foundKeys
+     * @return FoundKey
+     */
+    private function _findKey($key, array $foundKeys)
+    {
+        foreach ($foundKeys as $foundKey) {
+            if ($foundKey->getKey() == $key) {
+                return $foundKey;
+                
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the first key
+     *
+     * @param int $offset
+     * @param int $direction
+     * @return array
+     * @throws IndexException_IO 
+     */
+    private function _findFirstKeys($offset, $direction)
+    {
+        if ($direction == self::DIRECTION_FORWARD) {
+            $readOffset = $offset;
+            
+        } elseif ($direction == self::DIRECTION_BACKWARD) {
+            $readOffset = $offset - $this->_getReadLength();
+            if ($readOffset < 0 ) {
+                $readOffset = 0;
+                
+            }
+        }
+        
+        // Read data
+        \fseek($this->_index->getFile()->getFilePointer(), $readOffset);
+        $data = \fread(
+            $this->_index->getFile()->getFilePointer(),
+            $this->_getReadLength()
+        );
         if ($data === FALSE) {
-            if (\feof($this->_filePointer)) {
-                return NULL;
+            if (\feof($this->_index->getFile()->getFilePointer())) {
+                return array();
 
             } else {
                 throw new IndexException_IO("Could not read file");
@@ -124,71 +188,62 @@ class BinarySearch
             }
 
         }
-
+        
         // Parse the read data
-        $foundKeys = $this->_indexParser->parseKeys($data, $readOffset);
-
-        // No keys were found
-        if (empty($foundKeys)) {
-            // No more data to read
-            if (\strlen($data) < $readLength) {
-                return NULL;
-
-            // Too little sectors were read
-            } else {
-                $this->_readSectorCount = $this->_readSectorCount * 2;
-                return $this->search($key);
-
+        $keys = $this->_index->getParser()->parseKeys($data, $readOffset);
+        
+        // Read more data
+        if (empty($keys)) {
+            // Only increase if there exists more data
+            if ($direction == self::DIRECTION_BACKWARD && $readOffset == 0) {
+                return array();
+                
+            } elseif (
+                $direction == self::DIRECTION_FORWARD
+                && $readOffset + $this->_getReadLength()
+                   >= $this->_index->getFile()->getFileSize()
+            ) {
+                return array();
+                
             }
+            
+            $this->_increaseReadLength();
+            return $this->_findFirstKeys($offset, $direction);
+            
         }
-
-        // Found
-        foreach ($foundKeys as $foundKey) {
-            if ($foundKey->getKey() == $key) {
-                return $readOffset + $foundKey->getOffset();
-
-            }
-
-        }
-
-        // Stop searching
-        if ($this->_range->getLength() <= $readLength) {
-            return NULL;
-
-        }
-
-        // smallest found key is bigger than search key; search left
-        if ($foundKeys[0]->getKey() > $key) {
-            $this->_range->splitLeft();
-            // Set the last read flag
-            // +1 because of (int) conversion
-            if ($this->_range->getLength() <= $readLength + 1) {
-                $this->_isLastData = true;
-
-            }
-            // Add a full read, because of chunked readings
-            $this->_range->addLength($readLength);
-            return $this->search($key);
-
-        }
-
-        // biggest found key is smaller than search key; search right
-        if ($foundKeys[\count($foundKeys) - 1]->getKey() < $key) {
-            $this->_range->splitRight();
-            // Set the last read flag
-            // +1 because of (int) conversion
-            if ($this->_range->getLength() <= $readLength + 1) {
-                $this->_isLastData = true;
-
-            }
-            // Add a full read, because of chunked readings
-            $this->_range->decreaseOffset($readLength);
-            return $this->search($key);
-
-        }
-
-        // Not found
-        return NULL;
+        
+        return $keys;
+    }
+    
+    /**
+     * Returns the offset for the split
+     * 
+     * @return int 
+     */
+    private function _getSplitOffset()
+    {
+        $blocks = (int) $this->_range->getLength() / $this->_getReadLength();
+        $centerBlock = (int) $blocks / 2;
+        return $centerBlock * $this->_getReadLength();
+    }
+    
+    /**
+     * Returns the length of one read operation 
+     * 
+     * @return int
+     */
+    private function _getReadLength()
+    {
+        return
+            $this->_index->getFile()->getBlockSize() * $this->_readBlockCount;
+    }
+    
+    /**
+     * Increases the read size
+     */
+    private function _increaseReadLength()
+    {
+        $this->_readBlockCount = $this->_readBlockCount * 2;
     }
 
 }

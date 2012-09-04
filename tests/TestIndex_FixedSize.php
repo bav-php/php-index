@@ -79,8 +79,8 @@ class TestIndex_FixedSize extends AbstractTest
     public function provideTestIndexConfiguration()
     {
         $cases = array();
-        $lengths = array(1, 10, 100, index\BinarySearch::SECTOR_SIZE * 3);
-        $offsets = array(0, 1, index\BinarySearch::SECTOR_SIZE * 3);
+        $lengths = array(1, 10, 100, index\File::DEFAULT_SECTOR_SIZE * 24);
+        $offsets = array(0, 1, index\File::DEFAULT_SECTOR_SIZE * 24);
         foreach ($lengths as $length) {
             foreach ($offsets as $offset) {
                 $indexFieldLength = 1;

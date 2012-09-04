@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Defines the class Range
+ * Defines the class ByteRange
  *
  * PHP version 5
  *
@@ -37,7 +37,7 @@ namespace de\malkusch\index;
  * @version  Release: 1.0
  * @link     http://php-index.malkusch.de/en/
  */
-class Range
+class ByteRange
 {
 
     private
@@ -48,20 +48,10 @@ class Range
     /**
      * @var int
      */
-    $_length = 0,
-    /**
-     * @var int
-     */
-    $_minOffset = 0,
-    /**
-     * @var int
-     */
-    $_maxOffset = 0;
+    $_length = 0;
 
     /**
      * Sets the range
-     *
-     * $_minOffset and $_maxOffset will be the initial range.
      *
      * @param int $offset Offset
      * @param int $length Length
@@ -70,14 +60,10 @@ class Range
     {
         $this->_offset = $offset;
         $this->_length = $length;
-        $this->_minOffset = $this->_offset;
-        $this->_maxOffset = $this->_offset + $length;
     }
     
     /**
      * Sets the offset
-     *
-     * The offset will never be set below $_minOffset
      *
      * @param int $offset Offset
      *
@@ -85,35 +71,11 @@ class Range
      */
     public function setOffset($offset)
     {
-        if ($offset < $this->_minOffset) {
-            $offset = $this->_minOffset;
-
-        }
         $this->_offset = $offset;
     }
 
     /**
-     * Decreases the offset
-     *
-     * Decreasing the offset does automatically increase the length for the
-     * same amount. This asserts that the last byte is still included in the
-     * range.
-     *
-     * @param int $offset Amount for decreasing
-     *
-     * @return void
-     */
-    public function decreaseOffset($decreasment)
-    {
-        $this->setOffset($this->_offset - $decreasment);
-        $this->addLength($decreasment);
-    }
-
-    /**
      * Sets a new length
-     *
-     * The last byte of the range will never be larger than the initial last
-     * byte.
      *
      * @param int $length Length
      *
@@ -121,23 +83,7 @@ class Range
      */
     public function setLength($length)
     {
-        if ($this->_offset + $length > $this->_maxOffset) {
-            $length = $this->_maxOffset - $this->_offset;
-
-        }
         $this->_length = $length;
-    }
-
-    /**
-     * Increases the length
-     *
-     * @param int $increasement Amount for increasing
-     *
-     * @return void
-     */
-    public function addLength($increasement)
-    {
-        $this->setLength($this->_length + $increasement);
     }
 
     /**
@@ -159,37 +105,15 @@ class Range
     {
         return $this->_length;
     }
-
+    
     /**
-     * Returns the middle of this range
-     *
+     * Returns the offset of the last byte + 1 of this range
+     * 
      * @return int
      */
-    public function getMiddle()
+    public function getNextByteOffset()
     {
-        return $this->_offset + (int) ($this->_length / 2);
-    }
-
-    /**
-     * The range shrinks to the left half
-     *
-     * @return void
-     */
-    public function splitLeft()
-    {
-        $this->_length = $this->getMiddle() - $this->_offset;
-    }
-
-    /**
-     * The range shrinks to the right half
-     *
-     * @return void
-     */
-    public function splitRight()
-    {
-        $middle = $this->getMiddle();
-        $this->setLength($this->_length - ($middle - $this->_offset));
-        $this->_offset = $middle;
+        return $this->_offset + $this->_length;
     }
 
 }

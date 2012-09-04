@@ -59,13 +59,9 @@ abstract class Index
 
     private
     /**
-     * @var string
+     * @var File
      */
-    $_file = "",
-    /**
-     * @var resource
-     */
-    $_filePointer;
+    $_file;
 
     /**
      * Returns a parser for this index
@@ -75,29 +71,16 @@ abstract class Index
     abstract public function getParser();
 
     /**
-     * Sets the index file and opens a file pointer
+     * Sets the index file
      *
-     * @param string $file Index file
+     * @param string $path Index file
      *
      * @throws IndexException_IO_FileExists
      * @throws IndexException_IO
      */
-    public function __construct($file)
+    public function __construct($path)
     {
-        $this->_file        = $file;
-        $this->_filePointer = @\fopen($file, "rb");
-
-        if (! \is_resource($this->_filePointer)) {
-            if (! \file_exists($file)) {
-                throw new IndexException_IO_FileExists(
-                    "'$file' doesn't exist."
-                );
-
-            }
-            $errors = \error_get_last();
-            throw new IndexException_IO($errors["message"]);
-
-        }
+        $this->_file = new File($path);
     }
 
     /**
@@ -124,21 +107,11 @@ abstract class Index
     /**
      * Returns the index file
      *
-     * @return string
+     * @return File
      */
     public function getFile()
     {
         return $this->_file;
     }
 
-    /**
-     * Returns an open file pointer for reading in binary mode
-     *
-     * @return resource
-     */
-    public function getFilePointer()
-    {
-        return $this->_filePointer;
-    }
-    
 }

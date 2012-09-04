@@ -75,6 +75,14 @@ class Parser_FixedSize extends Parser
 
         }
         
+        /*
+        var_dump(
+            $data, 
+            $pregExp,
+            $offset
+        );
+         */
+        
         return $keys;
     }
     
@@ -91,7 +99,7 @@ class Parser_FixedSize extends Parser
      */
     public function getData($offset)
     {
-        $filePointer = $this->getIndex()->getFilePointer();
+        $filePointer = $this->getIndex()->getFile()->getFilePointer();
         \fseek($filePointer, $offset);
         $data = \fgets($filePointer);
         

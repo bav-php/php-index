@@ -69,16 +69,16 @@ class Index_XML extends Index
     /**
      * Sets the index file, container name and the index attribute
      *
-     * @param string $file      Index file
+     * @param string $path      Index file
      * @param string $element   Container name
      * @param string $attribute Index attribute name
      *
      * @throws IndexException_IO_FileExists
      * @throws IndexException_IO
      */
-    public function __construct($file, $element, $attribute)
+    public function __construct($path, $element, $attribute)
     {
-        parent::__construct($file);
+        parent::__construct($path);
         
         $this->_element   = $element;
         $this->_attribute = $attribute;

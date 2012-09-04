@@ -56,18 +56,20 @@ class TestBinarySearch extends AbstractTest
     {
         $generator = new IndexGenerator_XML();
         $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
+        $generator->setMinimumDataSize(
+            $generator->getIndex()->getFile()->getBlockSize() * 3
+        );
 
         $index = $generator->getIndex();
         $binarySearch = new index\BinarySearch($index);
         $binarySearch->search(3);
 
-        $reflectedReadSectorCount
-            = new \ReflectionProperty($binarySearch, "_readSectorCount");
-        $reflectedReadSectorCount->setAccessible(true);
-        $readSectorCount = $reflectedReadSectorCount->getValue($binarySearch);
+        $reflectedReadBlockCount
+            = new \ReflectionProperty($binarySearch, "_readBlockCount");
+        $reflectedReadBlockCount->setAccessible(true);
+        $readBlockCount = $reflectedReadBlockCount->getValue($binarySearch);
 
-        $this->assertGreaterThanOrEqual(3, $readSectorCount);
+        $this->assertGreaterThanOrEqual(3, $readBlockCount);
     }
 
 }
