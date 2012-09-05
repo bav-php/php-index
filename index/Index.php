@@ -97,7 +97,7 @@ abstract class Index
     {
         $binarySearch = new BinarySearch($this);
         $offset = $binarySearch->search($key);
-        if ($offset == NULL) {
+        if (\is_null($offset)) {
             return NULL;
             
         }

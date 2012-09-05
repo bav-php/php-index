@@ -97,7 +97,7 @@ class BinarySearch
         if (! empty($keys) && \end($keys)->getKey() < $key) {
             $newOffset = $splitOffset + $this->_getReadLength();
             $newLength = $this->_range->getLength()
-                       - $newOffset - $this->_range->getOffset();
+                       - ($newOffset - $this->_range->getOffset());
             $this->_range->setOffset($newOffset);
             $this->_range->setLength($newLength);
             return $this->search($key);

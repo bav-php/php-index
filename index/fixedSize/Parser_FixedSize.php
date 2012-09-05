@@ -71,17 +71,17 @@ class Parser_FixedSize extends Parser
         $keys = array();
 
         foreach ($matches as $match) {
-            $keys[] = new FoundKey($match[0][1] + 1, $match[2][0]);
+            $keyOffset = $offset + $match[0][1] + 1;
+            $key = $match[2][0];
+            $keys[] = new FoundKey($keyOffset, $key);
 
         }
         
-        /*
-        var_dump(
-            $data, 
-            $pregExp,
-            $offset
-        );
-         */
+        // The first match doesn't begin with \n
+        if ($offset == 0) {
+            $keys[0]->setOffset(0);
+            
+        }
         
         return $keys;
     }
@@ -89,7 +89,7 @@ class Parser_FixedSize extends Parser
     /**
      * Returns the data container which starts at $offset
      *
-     * The offset is a result of pareKeys().
+     * The offset is a result of parseKeys().
      *
      * @param int $offset Offset of the container
      *
@@ -108,6 +108,13 @@ class Parser_FixedSize extends Parser
             throw new IndexException_ReadData("Failed to read data: $error");
             
         }
+        
+        // strip the trailing \n
+        if (! \feof($filePointer)) {
+            $data = substr($data, 0, -1);
+            
+        }
+        
         return $data;
     }
     

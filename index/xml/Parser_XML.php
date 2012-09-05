@@ -113,7 +113,7 @@ class Parser_XML extends Parser
         $this->_parserLevel    = 0;
         $data        = "";
         $parser      = @\xml_parser_create();
-        $filePointer = $this->getIndex()->getFilePointer();
+        $filePointer = $this->getIndex()->getFile()->getFilePointer();
 
         if (! \is_resource($parser)) {
             $error = \error_get_last();
@@ -132,7 +132,7 @@ class Parser_XML extends Parser
         \fseek($filePointer, $offset);
         while (
             \is_null($this->_parserPosition)
-            && $chunk = \fread($filePointer, BinarySearch::SECTOR_SIZE)
+            && $chunk = \fread($filePointer, $this->getIndex()->getFile()->getBlockSize())
         ) {
             $data .= $chunk;
             \xml_parse($parser, $chunk);

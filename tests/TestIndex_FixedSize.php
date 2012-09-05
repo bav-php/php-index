@@ -78,6 +78,11 @@ class TestIndex_FixedSize extends AbstractTest
     
     public function provideTestIndexConfiguration()
     {
+        return array(
+            array(0, 10, 10)
+            // array(index\File::DEFAULT_SECTOR_SIZE * 24, 1, 10)
+        );
+        
         $cases = array();
         $lengths = array(1, 10, 100, index\File::DEFAULT_SECTOR_SIZE * 24);
         $offsets = array(0, 1, index\File::DEFAULT_SECTOR_SIZE * 24);

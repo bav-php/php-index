@@ -56,7 +56,7 @@ class FoundKey
     /**
      * Sets the offset and the found key
      *
-     * @param int    $offset Offset in the data chunk
+     * @param int    $offset Offset in the index
      * @param string $key    Found key
      */
     public function __construct($offset, $key)
@@ -66,9 +66,17 @@ class FoundKey
     }
 
     /**
-     * Returns the offset of the found key
+     * Sets the offset of the found key
      *
-     * This offset is valid for the searched data chunk.
+     * @param int $offset
+     */
+    public function setOffset($offset)
+    {
+        return $this->_offset = $offset;
+    }
+
+    /**
+     * Returns the offset of the found key
      *
      * @return int
      */
