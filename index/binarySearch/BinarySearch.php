@@ -224,7 +224,7 @@ class BinarySearch
     {
         $blocks = (int) $this->_range->getLength() / $this->_getReadLength();
         $centerBlock = (int) $blocks / 2;
-        return $centerBlock * $this->_getReadLength();
+        return $this->_range->getOffset() + $centerBlock * $this->_getReadLength();
     }
     
     /**
