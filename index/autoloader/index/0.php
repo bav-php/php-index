@@ -17,6 +17,7 @@
 return array(
     'de\malkusch\index\file' => '../file/File.php',
     'de\malkusch\index\index' => '../Index.php',
+    'de\malkusch\index\result' => '../Result.php',
     'de\malkusch\index\parser' => '../parser/Parser.php',
     'de\malkusch\index\foundkey' => '../parser/FoundKey.php',
     'de\malkusch\index\byterange' => '../binarySearch/ByteRange.php',

@@ -90,7 +90,7 @@ abstract class Index
      * 
      * @param string $key Key in the index
      *
-     * @return string
+     * @return Result
      * @throws IndexException_ReadData
      */
     public function search($key)
@@ -101,7 +101,12 @@ abstract class Index
             return NULL;
             
         }
-        return $this->getParser()->getData($offset);
+        $result = new Result();
+        $result->setKey($key);
+        $result->setOffset($offset);
+        $result->setData($this->getParser()->getData($offset));
+        
+        return $result;
     }
 
     /**

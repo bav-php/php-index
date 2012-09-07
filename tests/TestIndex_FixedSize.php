@@ -62,14 +62,14 @@ class TestIndex_FixedSize extends AbstractTest
         $index = $generator->getIndex();
         for ($key = 0; $key < $length; $key++) {
             $counter = new SplitCounter();
-            $data    = $index->search($key);
-            $this->assertNotNull($data, "key: $key");
+            $result  = $index->search($key);
+            $this->assertNotNull($result, "key: $key");
             
             $counter->stopCounting();
             $this->assertComplexity($generator, $counter);
             $this->assertRegExp(
                 '/data_' . $key . '_.*\$/s',
-                $data,
+                $result->getData(),
                 "key: $key"
             );
             

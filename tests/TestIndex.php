@@ -66,14 +66,14 @@ class TestIndex extends AbstractTest
 
             }
             $counter = new SplitCounter();
-            $data    = $index->search($key);
-            $this->assertNotNull($data);
+            $result  = $index->search($key);
+            $this->assertNotNull($result);
             
             $counter->stopCounting();
             $this->assertComplexity($generator, $counter);
             $this->assertRegExp(
                 '/data_' . $key . '_.*\$/s',
-                $data
+                $result->getData()
             );
 
         }
