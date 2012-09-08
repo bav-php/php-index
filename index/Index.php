@@ -96,15 +96,12 @@ abstract class Index
     public function search($key)
     {
         $binarySearch = new BinarySearch($this);
-        $offset = $binarySearch->search($key);
-        if (\is_null($offset)) {
+        $result = $binarySearch->search($key);
+        if (\is_null($result)) {
             return NULL;
             
         }
-        $result = new Result();
-        $result->setKey($key);
-        $result->setOffset($offset);
-        $result->setData($this->getParser()->getData($offset));
+        $result->setData($this->getParser()->getData($result->getOffset()));
         
         return $result;
     }

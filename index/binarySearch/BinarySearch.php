@@ -91,7 +91,7 @@ class BinarySearch
      * 
      * @param string $key Key
      *
-     * @return int
+     * @return Result
      * @throws IndexException_IO
      */
     public function search($key)
@@ -104,7 +104,7 @@ class BinarySearch
         $foundKey = $this->_findKey($key, $keys);
         // found
         if (! is_null($foundKey)) {
-            return $foundKey->getOffset();
+            return $foundKey;
             
         }
         // check if search should terminate
@@ -142,7 +142,7 @@ class BinarySearch
         $foundKey = $this->_findKey($key, $keys);
         // found
         if (! is_null($foundKey)) {
-            return $foundKey->getOffset();
+            return $foundKey;
             
         }
         // terminate if no more keys in the index
@@ -190,7 +190,7 @@ class BinarySearch
     /**
      * @param String $key
      * @param array $foundKeys
-     * @return FoundKey
+     * @return Result
      */
     private function _findKey($key, array $foundKeys)
     {

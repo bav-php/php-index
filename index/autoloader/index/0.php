@@ -20,7 +20,6 @@ return array(
     'de\malkusch\index\range' => '../Range.php',
     'de\malkusch\index\result' => '../Result.php',
     'de\malkusch\index\parser' => '../parser/Parser.php',
-    'de\malkusch\index\foundkey' => '../parser/FoundKey.php',
     'de\malkusch\index\byterange' => '../binarySearch/ByteRange.php',
     'de\malkusch\index\index_xml' => '../xml/Index_XML.php',
     'de\malkusch\index\parser_xml' => '../xml/Parser_XML.php',

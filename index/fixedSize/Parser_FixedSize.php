@@ -51,7 +51,7 @@ class Parser_FixedSize extends Parser
      * @param int    $offset Position where the data came from
      *
      * @return array
-     * @see FoundKey
+     * @see Result
      */
     public function parseKeys($data, $offset)
     {
@@ -73,7 +73,10 @@ class Parser_FixedSize extends Parser
         foreach ($matches as $match) {
             $keyOffset = $offset + $match[0][1] + 1;
             $key = $match[2][0];
-            $keys[] = new FoundKey($keyOffset, $key);
+            $result = new Result();
+            $result->setKey($key);
+            $result->setOffset($keyOffset);
+            $keys[] = $result;
 
         }
         

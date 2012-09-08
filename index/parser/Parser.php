@@ -57,7 +57,7 @@ abstract class Parser
      * @param int    $offset The position where the date came from
      *
      * @return array
-     * @see FoundKey
+     * @see Result
      */
     abstract public function parseKeys($data, $offset);
     /**
