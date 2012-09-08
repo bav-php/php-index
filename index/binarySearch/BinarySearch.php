@@ -85,9 +85,13 @@ class BinarySearch
     }
 
     /**
-     * Returns the offset of a container for the searched key
+     * Searches for a key or some neighbour
      *
-     * Returns NULL if the key wasn't found.
+     * If it doesn't find the key. A neighbour will be returned. The
+     * neighbour mustn't be the closest neighbour. It's just a good hint
+     * where the key should be expected.
+     * 
+     * Returns NULL if no key could be found at all.
      * 
      * @param string $key Key
      *
@@ -109,7 +113,7 @@ class BinarySearch
         }
         // check if search should terminate
         if ($this->_isKeyRange($key, $keys)) {
-            return NULL;
+            return \reset($keys);
             
         }
         
@@ -118,7 +122,7 @@ class BinarySearch
             $newOffset = $splitOffset + $this->_getReadLength();
             // Stop if beyond index
             if ($newOffset >= $this->_index->getFile()->getFileSize()) {
-                return NULL;
+                return \end($keys);
                 
             }
             $newLength = $this->_range->getLength()
@@ -152,14 +156,14 @@ class BinarySearch
         }
         // check if search should terminate
         if ($this->_isKeyRange($key, $keys)) {
-            return NULL;
+            return \reset($keys);
             
         }
         
         // Finally continue searching in the left side
         $newLength = \reset($keys)->getOffset() - $this->_range->getOffset() - 1;
         if ($newLength >= $this->_range->getLength()) {
-            return NULL;
+            return \reset($keys);
             
         }
         $this->_range->setLength($newLength);

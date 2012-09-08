@@ -97,7 +97,7 @@ abstract class Index
     {
         $binarySearch = new BinarySearch($this);
         $result = $binarySearch->search($key);
-        if (\is_null($result)) {
+        if (\is_null($result) || $result->getKey() != $key) {
             return NULL;
             
         }
