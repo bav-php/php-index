@@ -100,6 +100,26 @@ abstract class IndexGenerator
     }
     
     /**
+     * Returns the blocksize of the test indexes
+     * 
+     * @return int 
+     */
+    static public function getBlockSize()
+    {
+        $stat = \stat(self::getTestIndexPath());
+        if (\is_array($stat)
+            && isset($stat["blksize"])
+            && $stat["blksize"] > 0
+        ) {
+            return $stat["blksize"];
+            
+        } else {
+            return index\File::DEFAULT_BLOCK_SIZE;
+            
+        }
+    }
+    
+    /**
      * Sets the minimum size for data in the index
      *
      * @param int $size Data size
@@ -126,7 +146,7 @@ abstract class IndexGenerator
      *
      * @return string
      */
-    protected function generateData($key)
+    public function generateData($key)
     {
         $filler = \str_repeat(".", $this->_minDataSize + ($key % 1024));
         return "data_{$key}_{$filler}$";

@@ -47,141 +47,87 @@ class TestIndex extends AbstractTest
 {
 
     /**
-     * Tests searching in the index and its complexity
-     *
-     * @param IndexGenerator $generator  Index generator
-     * @param bool           $reuseIndex Index will be reused
-     *
-     * @return void
-     * @dataProvider provideTestSearch
-     */
-    public function testSearch(
-        IndexGenerator $generator,
-        $reuseIndex = true
-    ) {
-        $index = $generator->getIndex();
-        for ($key = 0; $key < $generator->getIndexLength(); $key++) {
-            if (! $reuseIndex) {
-                $index = $generator->getIndex();
-
-            }
-            $counter = new SplitCounter();
-            $result  = $index->search($key);
-            $this->assertNotNull($result);
-            
-            $counter->stopCounting();
-            $this->assertComplexity($generator, $counter);
-            $this->assertRegExp(
-                '/data_' . $key . '_.*\$/s',
-                $result->getData()
-            );
-
-        }
-    }
-
-    /**
-     * Test cases for testSearch()
-     *
-     * @return Array
-     * @see TestIndex::testSearch()
-     */
-    public function provideTestSearch()
-    {
-        $cases  = array();
-
-        // Large Container
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
-        $cases[] = array($generator);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
-        $cases[] = array($generator);
-        
-        // Large Container, with new index each key
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
-        $cases[] = array($generator, false);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(index\BinarySearch::SECTOR_SIZE * 3);
-        $cases[] = array($generator, false);
-        
-        // Large index
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(10000);
-        $generator->formatOutput(true);
-        $cases[] = array($generator);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(10000);
-        $cases[] = array($generator);
-        
-        // Index in one line
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(10000);
-        $generator->formatOutput(false);
-        $cases[] = array($generator);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(10000);
-        $cases[] = array($generator);
-
-        // Index has only one element
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(1);
-        $generator->formatOutput(true);
-        $cases[] = array($generator);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(1);
-        $cases[] = array($generator);
-        
-        // Index has only one element and is only one line
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(1);
-        $generator->formatOutput(false);
-        $cases[] = array($generator);
-        
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(1);
-        $cases[] = array($generator);
-
-        return $cases;
-    }
-
-    /**
-     * Tests that failing terminates and its complexity
+     * Tests searching
      *
      * @param IndexGenerator $generator Index generator
      *
      * @return void
-     * @dataProvider provideTestFailSearch
+     * @dataProvider provideTestSearch
      */
-    public function testFailSearch(
-        IndexGenerator $generator
-    ) {
+    public function testSearch(IndexGenerator $generator)
+    {
         $index = $generator->getIndex();
-        $start = $generator->getMinimum() - 1;
-        $end   = $generator->getMaximum() + 2 * $generator->getStepSize();
-        for ($key = $start; $key <= $end; $key += 1) {
-            if ($generator->isKey($key)) {
+        for (
+            $key = $generator->getMinimum();
+            $key <= $generator->getMaximum();
+            $key++
+        ) {
+            if (! $generator->isKey($key)) {
                 continue;
                 
             }
-            $counter = new SplitCounter();
+            $result = $index->search($key);
+            $this->assertNotNull(
+                $result,
+                "key: $key, max: {$generator->getMaximum()},"
+                . " step: {$generator->getStepSize()}"
+                . " length: {$generator->getIndexLength()}"
+            );
+            $expected = preg_quote($generator->generateData($key));
+            // $this->assertRegExp("/$expected/", $result->getData());
             
-            $data = $index->search($key);
-            $this->assertNull($data);
-                
-            $counter->stopCounting();
-            $this->assertComplexity($generator, $counter);
-
         }
+    }
+    
+    /**
+     * Test cases for testSearch()
+     *
+     * @return void
+     */
+    public function provideTestSearch()
+    {
+        $cases = array();
+        
+        $lengths = array(
+            1,
+            2,
+            10,
+            IndexGenerator::getBlockSize() - 1,
+            IndexGenerator::getBlockSize(),
+            IndexGenerator::getBlockSize() + 1,
+            IndexGenerator::getBlockSize() * 4,
+        );
+        
+        $steps = array(
+            1,
+            2,
+            3,
+            5,
+            IndexGenerator::getBlockSize()
+        );
+        
+        foreach ($lengths as $length) {
+            foreach ($steps as $step) {
+                $generator = new IndexGenerator_FixedSize();
+                $generator->setIndexLength($length);
+                $generator->setStepSize(2);
+                $cases[] = array($generator);
+                
+            }
+        }
+        
+        return $cases;
+    }
+    
+    /**
+     * Tests that failing terminates
+     *
+     * @return void
+     * @dataProvider provideTestFailSearch
+     */
+    public function testFailSearch(index\Index $index, $key)
+    {
+        $this->assertNull($index->search($key));
     }
 
     /**
@@ -193,50 +139,48 @@ class TestIndex extends AbstractTest
     {
         $cases  = array();
         
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(10);
-        $generator->formatOutput(true);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
+        // different sizes
+        $lengths = array(
+            0,
+            1,
+            10,
+            IndexGenerator::getBlockSize() - 1,
+            IndexGenerator::getBlockSize(),
+            IndexGenerator::getBlockSize() + 1,
+            IndexGenerator::getBlockSize() * 4
+        );
         
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(10);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
+        foreach ($lengths as $length) {
+            // Fail searching for MIN(index) - 1
+            $generator = new IndexGenerator_FixedSize();
+            $generator->setIndexLength($length);
+            $generator->getIndex();
+            $cases[] = array(
+                $generator->getIndex(),
+                $generator->getMinimum() - 1
+            );
+            
+            // Fail searching for MAX(index) + 1
+            $generator = new IndexGenerator_FixedSize();
+            $generator->setIndexLength($length);
+            $generator->getIndex();
+            $cases[] = array(
+                $generator->getIndex(),
+                $generator->getMaximum() + 1
+            );
+            
+            // Fail searching for any missing key inside the index range
+            $generator = new IndexGenerator_FixedSize();
+            $generator->setIndexLength($length);
+            $generator->setStepSize(2);
+            $generator->getIndex();
+            $cases[] = array(
+                $generator->getIndex(),
+                $generator->getMaximum() / 2 + 0.1
+            );
+            
+        }
         
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(1000);
-        $generator->formatOutput(true);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(1000);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(10000);
-        $generator->formatOutput(true);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(10000);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
-        $generator = new IndexGenerator_XML();
-        $generator->setIndexLength(10000);
-        $generator->formatOutput(false);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
-        $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(10000);
-        $generator->setStepSize(2);
-        $cases[] = array($generator);
-
         return $cases;
     }
 

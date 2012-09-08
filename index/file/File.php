@@ -44,13 +44,13 @@ class File
     /**
      * Sector size
      */
-    DEFAULT_SECTOR_SIZE = 512;
+    DEFAULT_BLOCK_SIZE = 512;
     
     private
     /**
      * @var int
      */
-    $_blocksize = self::DEFAULT_SECTOR_SIZE,
+    $_blocksize = self::DEFAULT_BLOCK_SIZE,
     /**
      * @var String
      */

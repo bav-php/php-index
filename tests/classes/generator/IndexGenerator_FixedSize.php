@@ -113,7 +113,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
         
         for (
             $key = 0;
-            $key < $this->getIndexLength();
+            $key <= $this->getMaximum();
             $key += $this->getStepSize()
         ) {
             $indexKey = str_pad($key, $this->getIndexFieldLength());

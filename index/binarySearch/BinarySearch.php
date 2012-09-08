@@ -47,6 +47,10 @@ class BinarySearch
 
     private
     /**
+     * @var int 
+     */
+    $_offset = 0,
+    /**
      * @var int
      */
     $_readBlockCount = 1,
@@ -69,6 +73,16 @@ class BinarySearch
         $this->_index = $index;
         $this->_range = new ByteRange(0, $index->getFile()->getFileSize());
     }
+    
+    /**
+     * Returns the last read offset
+     *
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->_offset;
+    }
 
     /**
      * Returns the offset of a container for the searched key
@@ -88,14 +102,25 @@ class BinarySearch
         // search right side
         $keys = $this->_findFirstKeys($splitOffset, self::DIRECTION_FORWARD);
         $foundKey = $this->_findKey($key, $keys);
-        if (! is_null($foundKey)) { // found
+        // found
+        if (! is_null($foundKey)) {
             return $foundKey->getOffset();
+            
+        }
+        // check if search should terminate
+        if ($this->_isKeyRange($key, $keys)) {
+            return NULL;
             
         }
         
         // If found keys are smaller continue in the right side
         if (! empty($keys) && \end($keys)->getKey() < $key) {
             $newOffset = $splitOffset + $this->_getReadLength();
+            // Stop if beyond index
+            if ($newOffset >= $this->_index->getFile()->getFileSize()) {
+                return NULL;
+                
+            }
             $newLength = $this->_range->getLength()
                        - ($newOffset - $this->_range->getOffset());
             $this->_range->setOffset($newOffset);
@@ -115,12 +140,18 @@ class BinarySearch
                 self::DIRECTION_BACKWARD
             );
         $foundKey = $this->_findKey($key, $keys);
-        if (! is_null($foundKey)) { // found
+        // found
+        if (! is_null($foundKey)) {
             return $foundKey->getOffset();
             
         }
-        // no more keys in the index
-        if (empty($keys) || \reset($keys)->getKey() < $key) {
+        // terminate if no more keys in the index
+        if (empty($keys)) {
+            return NULL;
+            
+        }
+        // check if search should terminate
+        if ($this->_isKeyRange($key, $keys)) {
             return NULL;
             
         }
@@ -133,6 +164,27 @@ class BinarySearch
         }
         $this->_range->setLength($newLength);
         return $this->search($key);
+    }
+    
+    /**
+     * Returns true if the key is expected to be in the key list
+     * 
+     * If the key list is a subset of the index, and the key sould not be in 
+     * this list, the key is nowhere else in the index.
+     *
+     * @param type $key
+     * @param array $keys
+     * 
+     * @return bool
+     */
+    private function _isKeyRange($key, Array $keys)
+    {
+        if (empty($keys)) {
+            return false;
+            
+        }
+        return \reset($keys)->getKey() <= $key
+            && \end($keys)->getKey() >= $key;
     }
     
     /**
@@ -162,18 +214,18 @@ class BinarySearch
     private function _findFirstKeys($offset, $direction)
     {
         if ($direction == self::DIRECTION_FORWARD) {
-            $readOffset = $offset;
+            $this->_offset = $offset;
             
         } elseif ($direction == self::DIRECTION_BACKWARD) {
-            $readOffset = $offset - $this->_getReadLength();
-            if ($readOffset < 0 ) {
-                $readOffset = 0;
+            $this->_offset = $offset - $this->_getReadLength();
+            if ($this->_offset < 0 ) {
+                $this->_offset = 0;
                 
             }
         }
         
         // Read data
-        \fseek($this->_index->getFile()->getFilePointer(), $readOffset);
+        \fseek($this->_index->getFile()->getFilePointer(), $this->_offset);
         $data = \fread(
             $this->_index->getFile()->getFilePointer(),
             $this->_getReadLength()
@@ -190,17 +242,17 @@ class BinarySearch
         }
         
         // Parse the read data
-        $keys = $this->_index->getParser()->parseKeys($data, $readOffset);
+        $keys = $this->_index->getParser()->parseKeys($data, $this->_offset);
         
         // Read more data
         if (empty($keys)) {
             // Only increase if there exists more data
-            if ($direction == self::DIRECTION_BACKWARD && $readOffset == 0) {
+            if ($direction == self::DIRECTION_BACKWARD && $this->_offset == 0) {
                 return array();
                 
             } elseif (
                 $direction == self::DIRECTION_FORWARD
-                && $readOffset + $this->_getReadLength()
+                && $this->_offset + $this->_getReadLength()
                    >= $this->_index->getFile()->getFileSize()
             ) {
                 return array();

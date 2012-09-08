@@ -78,7 +78,7 @@ class Parser_FixedSize extends Parser
         }
         
         // The first match doesn't begin with \n
-        if ($offset == 0) {
+        if ($offset == 0 && ! empty($keys)) {
             $keys[0]->setOffset(0);
             
         }
