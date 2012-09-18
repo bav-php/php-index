@@ -25,7 +25,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index\test;
+namespace malkusch\index\test;
 
 /**
  * Test suite with all tests

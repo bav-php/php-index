@@ -27,7 +27,7 @@
  */
 
 // Set the namespace
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 // Include the index and its autoloader
 require_once __DIR__ . "/../../index/Index.php";

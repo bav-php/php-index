@@ -25,8 +25,8 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index\test;
-use de\malkusch\index as index;
+namespace malkusch\index\test;
+use malkusch\index as index;
 
 /**
  * Generates an index

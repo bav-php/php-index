@@ -25,7 +25,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 /**
  * Binary search
@@ -83,7 +83,7 @@ class BinarySearch
     {
         return $this->_offset;
     }
-
+    
     /**
      * Searches for a key or some neighbour
      *
@@ -104,7 +104,7 @@ class BinarySearch
         $splitOffset = $this->_getSplitOffset();
         
         // search right side
-        $keys = $this->_findFirstKeys($splitOffset, self::DIRECTION_FORWARD);
+        $keys = $this->readKeys($splitOffset, self::DIRECTION_FORWARD);
         $foundKey = $this->_findKey($key, $keys);
         // found
         if (! is_null($foundKey)) {
@@ -139,7 +139,7 @@ class BinarySearch
             ? $this->_range->getNextByteOffset()
             : \reset($keys)->getOffset();
         $keys
-            = $this->_findFirstKeys(
+            = $this->readKeys(
                 $centerKeyOffset,
                 self::DIRECTION_BACKWARD
             );
@@ -215,7 +215,7 @@ class BinarySearch
      * @return array
      * @throws IndexException_IO 
      */
-    private function _findFirstKeys($offset, $direction)
+    public function readKeys($offset, $direction)
     {
         if ($direction == self::DIRECTION_FORWARD) {
             $this->_offset = $offset;
@@ -264,7 +264,7 @@ class BinarySearch
             }
             
             $this->_increaseReadLength();
-            return $this->_findFirstKeys($offset, $direction);
+            return $this->readKeys($offset, $direction);
             
         }
         

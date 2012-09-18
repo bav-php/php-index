@@ -25,7 +25,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 /**
  * Index_FixedSize parser

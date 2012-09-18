@@ -31,7 +31,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 /**
  * Autoloader

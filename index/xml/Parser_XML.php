@@ -25,7 +25,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 /**
  * XML Parser to find an index in an attribute of a container element

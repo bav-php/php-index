@@ -25,7 +25,7 @@
 /**
  * Namespace
  */
-namespace de\malkusch\index;
+namespace malkusch\index;
 
 /**
  * Search range
@@ -71,6 +71,34 @@ class Range
             $this->_max = $max;
             
         }
+    }
+    
+    /**
+     * Returns TRUE if key is inside this range regardless of the maximum border
+     * 
+     * @param String $key 
+     * 
+     * @return bool
+     */
+    public function isGreaterThanMinOuterBorder($key)
+    {
+        return $this->_inclusive
+             ? $key >= $this->_min
+             : $key > $this->_min;
+    }
+    
+    /**
+     * Returns TRUE if key is inside this range regardless of the minimum border
+     * 
+     * @param String $key 
+     * 
+     * @return bool
+     */
+    public function isLessesThanMaxOuterBorder($key)
+    {
+        return $this->_inclusive
+             ? $key <= $this->_max
+             : $key < $this->_max;
     }
     
     /**
