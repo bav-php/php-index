@@ -24,7 +24,7 @@
  * @copyright 2011 Markus Malkusch
  * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version   SVN: $Id$
- * @link      http://php-index.malkusch.de/en/
+ * @link      https://github.com/malkusch/php-index
  * @see       Index_XML
  */
 
@@ -52,7 +52,7 @@ require_once __DIR__ . "/autoloader/autoloader.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version  Release: 1.0
- * @link     http://php-index.malkusch.de/en/
+ * @link     https://github.com/malkusch/php-index
  */
 abstract class Index
 {
