@@ -86,7 +86,7 @@ abstract class Index
     /**
      * Searches for the container with that key
      *
-     * Returns NULL if the key wasn't found.
+     * Returns null if the key wasn't found.
      * 
      * @param string $key Key in the index
      *
@@ -98,7 +98,7 @@ abstract class Index
         $binarySearch = new BinarySearch($this);
         $result = $binarySearch->search($key);
         if (\is_null($result) || $result->getKey() != $key) {
-            return NULL;
+            return null;
             
         }
         $result->setData($this->getParser()->getData($result->getOffset()));

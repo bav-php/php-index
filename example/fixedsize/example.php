@@ -44,7 +44,7 @@ try  {
     // Search the data for the key 10077777
     $data = $index->search(10077777);
 
-    if ($data != NULL) {
+    if ($data != null) {
         \var_dump($data);
         
     } else {
@@ -55,7 +55,7 @@ try  {
     // Search the data for the nonexistend key 12345.
     $data = $index->search(12345);
     
-    if ($data != NULL) {
+    if ($data != null) {
         \var_dump($data);
         
     } else {

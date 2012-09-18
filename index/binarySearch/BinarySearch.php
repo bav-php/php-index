@@ -91,7 +91,7 @@ class BinarySearch
      * neighbour mustn't be the closest neighbour. It's just a good hint
      * where the key should be expected.
      * 
-     * Returns NULL if no key could be found at all.
+     * Returns null if no key could be found at all.
      * 
      * @param string $key Key
      *
@@ -151,7 +151,7 @@ class BinarySearch
         }
         // terminate if no more keys in the index
         if (empty($keys)) {
-            return NULL;
+            return null;
             
         }
         // check if search should terminate

@@ -109,7 +109,7 @@ class Parser_XML extends Parser
      */
     public function getData($offset)
     {
-        $this->_parserPosition = NULL;
+        $this->_parserPosition = null;
         $this->_parserLevel    = 0;
         $data        = "";
         $parser      = @\xml_parser_create();

@@ -43,7 +43,7 @@ try  {
     // Search the data for the key 1234
     $data = $index->search(1234);
     
-    if ($data != NULL) {
+    if ($data != null) {
        /*
         * The returned data is the XML as string. You can use SimpleXML to browse
         * the data.
@@ -57,7 +57,7 @@ try  {
 
     // Search the data for the nonexistend key 12345
     $data = $index->search(12345);
-    if ($data == NULL) {
+    if ($data == null) {
         echo "Didn't find key 12345\n";
         
     }
