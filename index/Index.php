@@ -1,36 +1,5 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
-/**
- * Defines the class Index
- *
- * This class is only an abstract index. You need to use the appropriate
- * implementation which fits your needs. Currently these implementations exists:
- *
- * Index_XML - Index is the attribute of a XML container
- *
- * PHP version 5
- *
- * LICENSE: This source file is subject to version 3.01 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
- * @category  Structures
- * @package   index
- * @author    Markus Malkusch <markus@malkusch.de>
- * @copyright 2011 Markus Malkusch
- * @license   http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version   SVN: $Id$
- * @link      https://github.com/malkusch/php-index
- * @see       Index_XML
- */
-
-/**
- * Namespace
- */
 namespace malkusch\index;
 
 /**
@@ -47,11 +16,7 @@ require_once __DIR__ . "/autoloader/autoloader.php";
  * have a sorted index. You simply call the method Index::search() to find the
  * container for the key.
  *
- * @category Structures
- * @package  index
  * @author   Markus Malkusch <markus@malkusch.de>
- * @license  http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version  Release: 1.0
  * @link     https://github.com/malkusch/php-index
  */
 abstract class Index
