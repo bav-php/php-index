@@ -57,11 +57,15 @@ require_once __DIR__ . "/autoloader/autoloader.php";
 abstract class Index
 {
 
-    private
     /**
      * @var File
      */
-    $_file;
+    private $_file;
+    /**
+     * @var KeyReader
+     */
+    private $_keyReader;
+    
 
     /**
      * Returns a parser for this index
@@ -71,7 +75,7 @@ abstract class Index
     abstract public function getParser();
 
     /**
-     * Sets the index file
+     * Sets the index file and inits the index
      *
      * @param string $path Index file
      *
@@ -81,6 +85,9 @@ abstract class Index
     public function __construct($path)
     {
         $this->_file = new File($path);
+        
+        $this->_keyReader = new KeyReader();
+        $this->_keyReader->setIndex($this);
     }
 
     /**
@@ -114,6 +121,16 @@ abstract class Index
     public function getFile()
     {
         return $this->_file;
+    }
+
+    /**
+     * Returns the KeyReader
+     *
+     * @return KeyReader
+     */
+    public function getKeyReader()
+    {
+        return $this->_keyReader;
     }
 
 }

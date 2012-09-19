@@ -40,19 +40,20 @@ namespace malkusch\index;
 class Range
 {
     
-    private
     /**
      * @var String
      */
-    $_min = "",
+    private $_min = "";
+    
     /**
      * @var String
      */
-    $_max = "",
+    private $_max = "";
+    
     /**
      * @var bool
      */
-    $_inclusive = true;
+    private $_inclusive = true;
     
     /**
      * Sets the borders of the range
@@ -74,7 +75,7 @@ class Range
     }
     
     /**
-     * Returns TRUE if key is inside this range regardless of the maximum border
+     * Returns true if key is inside this range regardless of the maximum border
      * 
      * @param String $key 
      * 
@@ -82,13 +83,11 @@ class Range
      */
     public function isGreaterThanMinOuterBorder($key)
     {
-        return $this->_inclusive
-             ? $key >= $this->_min
-             : $key > $this->_min;
+        return $this->_inclusive ? $key >= $this->_min : $key > $this->_min;
     }
     
     /**
-     * Returns TRUE if key is inside this range regardless of the minimum border
+     * Returns true if key is inside this range regardless of the minimum border
      * 
      * @param String $key 
      * 
@@ -96,9 +95,7 @@ class Range
      */
     public function isLessesThanMaxOuterBorder($key)
     {
-        return $this->_inclusive
-             ? $key <= $this->_max
-             : $key < $this->_max;
+        return $this->_inclusive ? $key <= $this->_max : $key < $this->_max;
     }
     
     /**

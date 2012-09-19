@@ -21,6 +21,7 @@ return array(
     'malkusch\index\result' => '../Result.php',
     'malkusch\index\parser' => '../parser/Parser.php',
     'malkusch\index\byterange' => '../binarySearch/ByteRange.php',
+    'malkusch\index\keyreader' => '../binarySearch/KeyReader.php',
     'malkusch\index\index_xml' => '../xml/Index_XML.php',
     'malkusch\index\parser_xml' => '../xml/Parser_XML.php',
     'malkusch\index\binarysearch' => '../binarySearch/BinarySearch.php',
