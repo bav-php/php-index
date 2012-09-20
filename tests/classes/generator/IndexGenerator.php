@@ -12,19 +12,18 @@ use malkusch\index as index;
 abstract class IndexGenerator
 {
 
-    private
     /**
      * @var int
      */
-    $_minDataSize = 1,
+    private $minDataSize = 1;
     /**
      * @var int
      */
-    $_stepSize = 1,
+    private $stepSize = 1;
     /**
      * @var int
      */
-    $_length = 0;
+    private $length = 0;
 
     /**
      * Creates a new Index file
@@ -55,7 +54,7 @@ abstract class IndexGenerator
      *
      * @return string
      */
-    static public function getTestIndexPath()
+    public static function getTestIndexPath()
     {
         return __DIR__ . "/../../index/";
     }
@@ -65,7 +64,7 @@ abstract class IndexGenerator
      *
      * @return string
      */
-    static private function _getTestIndexVarPath()
+    private static function _getTestIndexVarPath()
     {
         return self::getTestIndexPath() . "/var/";
     }
@@ -75,10 +74,11 @@ abstract class IndexGenerator
      * 
      * @return int 
      */
-    static public function getBlockSize()
+    public static function getBlockSize()
     {
         $stat = \stat(self::getTestIndexPath());
-        if (\is_array($stat)
+        if (
+            \is_array($stat)
             && isset($stat["blksize"])
             && $stat["blksize"] > 0
         ) {
@@ -99,7 +99,7 @@ abstract class IndexGenerator
      */
     public function setMinimumDataSize($size)
     {
-        $this->_minDataSize = $size;
+        $this->minDataSize = $size;
     }
 
     /**
@@ -119,7 +119,7 @@ abstract class IndexGenerator
      */
     public function generateData($key)
     {
-        $filler = \str_repeat(".", $this->_minDataSize + ($key % 1024));
+        $filler = \str_repeat(".", $this->minDataSize + ($key % 1024));
         return "data_{$key}_{$filler}$";
     }
 
@@ -135,7 +135,7 @@ abstract class IndexGenerator
      */
     public function setStepSize($stepSize)
     {
-        $this->_stepSize = $stepSize;
+        $this->stepSize = $stepSize;
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class IndexGenerator
      */
     public function getStepSize()
     {
-        return $this->_stepSize;
+        return $this->stepSize;
     }
 
     /**
@@ -157,7 +157,7 @@ abstract class IndexGenerator
      */
     public function setIndexLength($length)
     {
-        $this->_length = $length;
+        $this->length = $length;
     }
 
     /**
@@ -167,7 +167,7 @@ abstract class IndexGenerator
      */
     public function getIndexLength()
     {
-        return $this->_length;
+        return $this->length;
     }
 
     /**
@@ -187,7 +187,7 @@ abstract class IndexGenerator
      */
     public function getMaximum()
     {
-        return $this->_length * $this->_stepSize - $this->_stepSize;
+        return $this->length * $this->stepSize - $this->stepSize;
     }
 
     /**
@@ -203,8 +203,8 @@ abstract class IndexGenerator
             return false;
 
         }
-        $offset = $this->getMinimum() % $this->_stepSize;
-        return $key % $this->_stepSize == $offset;
+        $offset = $this->getMinimum() % $this->stepSize;
+        return $key % $this->stepSize == $offset;
     }
 
     /**

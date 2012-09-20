@@ -27,15 +27,14 @@ namespace malkusch\index;
 class Index_XML extends Index
 {
     
-    private
     /**
      * @var string
      */
-    $_element = "",
+    private $element = "";
     /**
      * @var string
      */
-    $_attribute = "";
+    private $attribute = "";
 
     /**
      * Sets the index file, container name and the index attribute
@@ -51,8 +50,8 @@ class Index_XML extends Index
     {
         parent::__construct($path);
         
-        $this->_element   = $element;
-        $this->_attribute = $attribute;
+        $this->element   = $element;
+        $this->attribute = $attribute;
     }
 
     /**
@@ -62,7 +61,7 @@ class Index_XML extends Index
      */
     public function getElement()
     {
-        return $this->_element;
+        return $this->element;
     }
 
     /**
@@ -72,7 +71,7 @@ class Index_XML extends Index
      */
     public function getAttribute()
     {
-        return $this->_attribute;
+        return $this->attribute;
     }
 
     /**

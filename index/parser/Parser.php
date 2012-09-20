@@ -13,11 +13,10 @@ namespace malkusch\index;
 abstract class Parser
 {
 
-    private
     /**
      * @var Index
      */
-    $_index;
+    private $index;
 
     /**
      * Returns an array with FoundKey objects
@@ -51,7 +50,7 @@ abstract class Parser
      */
     public function __construct(Index $index)
     {
-        $this->_index = $index;
+        $this->index = $index;
     }
 
     /**
@@ -61,7 +60,7 @@ abstract class Parser
      */
     public function getIndex()
     {
-        return $this->_index;
+        return $this->index;
     }
 
 }

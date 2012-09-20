@@ -14,19 +14,18 @@ namespace malkusch\index;
 class Result
 {
     
-    private
     /**
      * @var String
      */
-    $_key = "",
+    private $key = "";
     /**
      * @var String
      */
-    $_data = "",
+    private $data = "";
     /**
      * @var int
      */
-    $_offset = 0;
+    private $offset = 0;
     
     /**
      * Sets the key
@@ -37,7 +36,7 @@ class Result
      */
     public function setKey($key)
     {
-        $this->_key = $key;
+        $this->key = $key;
     }
     
     /**
@@ -47,7 +46,7 @@ class Result
      */
     public function getKey()
     {
-        return $this->_key;
+        return $this->key;
     }
     
     /**
@@ -59,7 +58,7 @@ class Result
      */
     public function setData($data)
     {
-        $this->_data = $data;
+        $this->data = $data;
     }
     
     /**
@@ -69,7 +68,7 @@ class Result
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
     
     /**
@@ -81,7 +80,7 @@ class Result
      */
     public function setOffset($offset)
     {
-        $this->_offset = $offset;
+        $this->offset = $offset;
     }
     
     /**
@@ -91,7 +90,7 @@ class Result
      */
     public function getOffset()
     {
-        return $this->_offset;
+        return $this->offset;
     }
     
 }

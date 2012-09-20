@@ -14,17 +14,17 @@ class Range
     /**
      * @var String
      */
-    private $_min = "";
+    private $min = "";
     
     /**
      * @var String
      */
-    private $_max = "";
+    private $max = "";
     
     /**
      * @var bool
      */
-    private $_inclusive = true;
+    private $inclusive = true;
     
     /**
      * Sets the borders of the range
@@ -35,12 +35,12 @@ class Range
     public function __construct($min, $max)
     {
         if ($min > $max) {
-            $this->_min = $max;
-            $this->_max = $min;
+            $this->min = $max;
+            $this->max = $min;
             
         } else {
-            $this->_min = $min;
-            $this->_max = $max;
+            $this->min = $min;
+            $this->max = $max;
             
         }
     }
@@ -54,7 +54,7 @@ class Range
      */
     public function isGreaterThanMinOuterBorder($key)
     {
-        return $this->_inclusive ? $key >= $this->_min : $key > $this->_min;
+        return $this->inclusive ? $key >= $this->min : $key > $this->min;
     }
     
     /**
@@ -66,7 +66,7 @@ class Range
      */
     public function isLessesThanMaxOuterBorder($key)
     {
-        return $this->_inclusive ? $key <= $this->_max : $key < $this->_max;
+        return $this->inclusive ? $key <= $this->max : $key < $this->max;
     }
     
     /**
@@ -76,7 +76,7 @@ class Range
      */
     public function setInclusive($inclusive)
     {
-        $this->_inclusive = $inclusive;
+        $this->inclusive = $inclusive;
     }
     
     /**
@@ -86,7 +86,7 @@ class Range
      */
     public function isInclusive()
     {
-        return $this->_inclusive;
+        return $this->inclusive;
     }
     
     /**
@@ -96,7 +96,7 @@ class Range
      */
     public function getMax()
     {
-        return $this->_max;
+        return $this->max;
     }
     
     /**
@@ -106,7 +106,7 @@ class Range
      */
     public function getMin()
     {
-        return $this->_min;
+        return $this->min;
     }
     
 }

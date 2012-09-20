@@ -12,25 +12,23 @@ use malkusch\index as index;
 class IndexGenerator_XML extends IndexGenerator
 {
 
-    const
     /**
      * Payload element
      */
-    ELEMENT_PAYLOAD = "payload";
+    const ELEMENT_PAYLOAD = "payload";
 
-    private
     /**
      * @var bool
      */
-    $_formatOutput = true,
+    private $formatOutput = true;
     /**
      * @var string
      */
-    $_element = "",
+    private $element = "";
     /**
      * @var string
      */
-    $_attribute = "";
+    private $attribute = "";
 
     /**
      * Sets the element's name and the index attribute
@@ -40,8 +38,8 @@ class IndexGenerator_XML extends IndexGenerator
      */
     public function __construct($element = "container", $attribute = "index")
     {
-        $this->_element   = $element;
-        $this->_attribute = $attribute;
+        $this->element   = $element;
+        $this->attribute = $attribute;
     }
     
     /**
@@ -55,7 +53,7 @@ class IndexGenerator_XML extends IndexGenerator
      */
     public function formatOutput($isFormatted)
     {
-        $this->_formatOutput = $isFormatted;
+        $this->formatOutput = $isFormatted;
     }
 
     /**
@@ -65,7 +63,7 @@ class IndexGenerator_XML extends IndexGenerator
      */
     public function getElement()
     {
-        return $this->_element;
+        return $this->element;
     }
 
     /**
@@ -75,7 +73,7 @@ class IndexGenerator_XML extends IndexGenerator
      */
     public function getAttribute()
     {
-        return $this->_attribute;
+        return $this->attribute;
     }
 
     /**
@@ -87,7 +85,7 @@ class IndexGenerator_XML extends IndexGenerator
      */
     protected function createIndex($file)
     {
-        return new index\Index_XML($file, $this->_element, $this->_attribute);
+        return new index\Index_XML($file, $this->element, $this->attribute);
     }
 
     /**
@@ -97,9 +95,8 @@ class IndexGenerator_XML extends IndexGenerator
      */
     protected function getIndexFileName()
     {
-        return
-            "$this->_element.$this->_attribute-{$this->getIndexLength()}"
-            . "-{$this->getStepSize()}-$this->_formatOutput.xml";
+        return "$this->element.$this->attribute-{$this->getIndexLength()}"
+            . "-{$this->getStepSize()}-$this->formatOutput.xml";
     }
 
     /**
@@ -113,21 +110,17 @@ class IndexGenerator_XML extends IndexGenerator
     protected function createIndexFile($file)
     {
         $document = new \DOMDocument();
-        $document->formatOutput = $this->_formatOutput;
+        $document->formatOutput = $this->formatOutput;
 
         $root = $document->createElement("document");
         $document->appendChild($root);
 
-        for (
-            $key = 0;
-            $key < $this->getIndexLength();
-            $key += $this->getStepSize()
-        ) {
-            $container = $document->createElement($this->_element);
+        for ($key = 0; $key < $this->getIndexLength(); $key += $this->getStepSize()) {
+            $container = $document->createElement($this->element);
             $root->appendChild($container);
 
             // Append the index
-            $attribute = $document->createAttribute($this->_attribute);
+            $attribute = $document->createAttribute($this->attribute);
             $container->appendChild($attribute);
             $attribute->value = $key;
 
@@ -141,7 +134,7 @@ class IndexGenerator_XML extends IndexGenerator
         }
 
         $bytes = $document->save($file);
-        if ($bytes === FALSE) {
+        if ($bytes === false) {
             throw new IndexTestException_CreateFile(
                 "Could not create test file"
             );

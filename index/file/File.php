@@ -11,29 +11,27 @@ namespace malkusch\index;
 class File
 {
     
-    const
     /**
      * Sector size
      */
-    DEFAULT_BLOCK_SIZE = 512;
+    const DEFAULT_BLOCK_SIZE = 512;
     
-    private
     /**
      * @var int
      */
-    $_blocksize = self::DEFAULT_BLOCK_SIZE,
+    private $blocksize = self::DEFAULT_BLOCK_SIZE;
     /**
      * @var String
      */
-    $_path = "",
+    private $path = "";
     /**
      * @var int
      */
-    $_size = 0,
+    private $size = 0;
     /**
      * @var resource
      */
-    $_filePointer;
+    private $filePointer;
     
     /**
      * Sets the index file and opens a file pointer
@@ -45,15 +43,13 @@ class File
      */
     public function __construct($path)
     {
-        $this->_path = $path;
+        $this->path = $path;
         
         // Open the file
-        $this->_filePointer = @\fopen($path, "rb");
-        if (! \is_resource($this->_filePointer)) {
+        $this->filePointer = @\fopen($path, "rb");
+        if (! \is_resource($this->filePointer)) {
             if (! \file_exists($path)) {
-                throw new IndexException_IO_FileExists(
-                    "'$path' doesn't exist."
-                );
+                throw new IndexException_IO_FileExists("'$path' doesn't exist.");
 
             }
             $errors = \error_get_last();
@@ -63,17 +59,14 @@ class File
         
         // Read the filesystem's blocksize
         $stat = \stat($path);
-        if (\is_array($stat)
-            && isset($stat["blksize"])
-            && $stat["blksize"] > 0
-        ) {
-            $this->_blocksize = $stat["blksize"];
+        if (\is_array($stat) && isset($stat["blksize"]) && $stat["blksize"] > 0) {
+            $this->blocksize = $stat["blksize"];
             
         }
         
         // Read the size
-        $this->_size = \filesize($path);
-        if ($this->_size === false) {
+        $this->size = \filesize($path);
+        if ($this->size === false) {
             throw new IndexException_IO("Can't read size of '$path'");
             
         }
@@ -86,7 +79,7 @@ class File
      */
     public function getFilePointer()
     {
-        return $this->_filePointer;
+        return $this->filePointer;
     }
     
     /**
@@ -96,7 +89,7 @@ class File
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
     
     /**
@@ -106,7 +99,7 @@ class File
      */
     public function getFileSize()
     {
-        return $this->_size;
+        return $this->size;
     }
     
     /**
@@ -116,7 +109,7 @@ class File
      */
     public function getBlockSize()
     {
-        return $this->_blocksize;
+        return $this->blocksize;
     }
     
 }

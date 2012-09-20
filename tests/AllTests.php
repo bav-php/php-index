@@ -16,7 +16,7 @@ class AllTests extends \PHPUnit_Framework_TestSuite
      *
      * @return AllTests
      */
-    static public function suite()
+    public static function suite()
     {
         $suite = new self();
 

@@ -11,15 +11,14 @@ namespace malkusch\index;
 class ByteRange
 {
 
-    private
     /**
      * @var int
      */
-    $_offset = 0,
+    private $offset = 0;
     /**
      * @var int
      */
-    $_length = 0;
+    private $length = 0;
 
     /**
      * Sets the range
@@ -27,10 +26,10 @@ class ByteRange
      * @param int $offset Offset
      * @param int $length Length
      */
-    public function  __construct($offset, $length)
+    public function __construct($offset, $length)
     {
-        $this->_offset = $offset;
-        $this->_length = $length;
+        $this->offset = $offset;
+        $this->length = $length;
     }
     
     /**
@@ -42,7 +41,7 @@ class ByteRange
      */
     public function setOffset($offset)
     {
-        $this->_offset = $offset;
+        $this->offset = $offset;
     }
 
     /**
@@ -54,7 +53,7 @@ class ByteRange
      */
     public function setLength($length)
     {
-        $this->_length = $length;
+        $this->length = $length;
     }
 
     /**
@@ -64,7 +63,7 @@ class ByteRange
      */
     public function getOffset()
     {
-        return $this->_offset;
+        return $this->offset;
     }
 
     /**
@@ -74,7 +73,7 @@ class ByteRange
      */
     public function getLength()
     {
-        return $this->_length;
+        return $this->length;
     }
     
     /**
@@ -84,7 +83,7 @@ class ByteRange
      */
     public function getNextByteOffset()
     {
-        return $this->_offset + $this->_length;
+        return $this->offset + $this->length;
     }
 
 }

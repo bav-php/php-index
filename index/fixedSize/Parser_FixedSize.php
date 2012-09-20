@@ -44,9 +44,11 @@ class Parser_FixedSize extends Parser
         foreach ($matches as $match) {
             $keyOffset = $offset + $match[0][1] + 1;
             $key = $match[2][0];
+            
             $result = new Result();
             $result->setKey($key);
             $result->setOffset($keyOffset);
+            
             $keys[] = $result;
 
         }

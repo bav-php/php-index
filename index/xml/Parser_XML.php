@@ -11,15 +11,14 @@ namespace malkusch\index;
 class Parser_XML extends Parser
 {
 
-    private
     /**
      * @var int
      */
-    $_parserLevel = 0,
+    private $parserLevel = 0;
     /**
      * @var int
      */
-    $_parserPosition = 0;
+    private $parserPosition = 0;
 
     /**
      * Returns the index
@@ -46,8 +45,7 @@ class Parser_XML extends Parser
     {
         $element   = \preg_quote($this->getIndex()->getElement());
         $attribute = \preg_quote($this->getIndex()->getAttribute());
-        $pregExp
-            = '/<' . $element . '\s([^>]*\s)?'
+        $pregExp = '/<' . $element . '\s([^>]*\s)?'
             . $attribute . '\s*=\s*([\'"])(.+?)\2[^>]*>/si';
 
         \preg_match_all(
@@ -80,8 +78,8 @@ class Parser_XML extends Parser
      */
     public function getData($offset)
     {
-        $this->_parserPosition = null;
-        $this->_parserLevel    = 0;
+        $this->parserPosition = null;
+        $this->parserLevel    = 0;
         $data        = "";
         $parser      = @\xml_parser_create();
         $filePointer = $this->getIndex()->getFile()->getFilePointer();
@@ -102,7 +100,7 @@ class Parser_XML extends Parser
 
         \fseek($filePointer, $offset);
         while (
-            \is_null($this->_parserPosition)
+            \is_null($this->parserPosition)
             && $chunk = \fread($filePointer, $this->getIndex()->getFile()->getBlockSize())
         ) {
             $data .= $chunk;
@@ -112,11 +110,11 @@ class Parser_XML extends Parser
 
         \xml_parser_free($parser);
 
-        if (\is_null($this->_parserPosition)) {
+        if (\is_null($this->parserPosition)) {
             throw new IndexException_ReadData("Did not read any data");
 
         }
-        return \substr($data, 0, $this->_parserPosition);
+        return \substr($data, 0, $this->parserPosition);
     }
 
     /**
@@ -134,7 +132,7 @@ class Parser_XML extends Parser
      */
     public function onStartElement($parser, $element, array $attributes)
     {
-        $this->_parserLevel++;
+        $this->parserLevel++;
     }
 
     /**
@@ -152,8 +150,8 @@ class Parser_XML extends Parser
      */
     public function onEndElement($parser, $element)
     {
-        $this->_parserLevel--;
-        if ($this->_parserLevel > 0) {
+        $this->parserLevel--;
+        if ($this->parserLevel > 0) {
             return;
 
         }
@@ -163,7 +161,7 @@ class Parser_XML extends Parser
             );
 
         }
-        $this->_parserPosition = \xml_get_current_byte_index($parser);
+        $this->parserPosition = \xml_get_current_byte_index($parser);
     }
 
 }

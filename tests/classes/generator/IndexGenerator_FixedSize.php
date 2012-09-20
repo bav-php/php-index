@@ -12,15 +12,14 @@ use malkusch\index as index;
 class IndexGenerator_FixedSize extends IndexGenerator
 {
     
-    private
     /**
      * @var int
      */
-    $_indexFieldOffset = 0,
+    private $indexFieldOffset = 0;
     /**
      * @var int
      */
-    $_indexFieldLength = 0;
+    private $indexFieldLength = 0;
 
     /**
      * Sets the index offset
@@ -31,7 +30,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
      */
     public function setIndexFieldOffset($indexFieldOffset)
     {
-        $this->_indexFieldOffset = $indexFieldOffset;
+        $this->indexFieldOffset = $indexFieldOffset;
     }
     
     /**
@@ -43,7 +42,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
      */
     public function setIndexFieldLength($indexFieldLength)
     {
-        $this->_indexFieldLength = $indexFieldLength;
+        $this->indexFieldLength = $indexFieldLength;
     }
     
     /**
@@ -53,9 +52,9 @@ class IndexGenerator_FixedSize extends IndexGenerator
      */
     public function getIndexFieldLength()
     {
-        return $this->_indexFieldLength < strlen($this->getMaximum())
+        return $this->indexFieldLength < strlen($this->getMaximum())
             ? strlen($this->getMaximum())
-            : $this->_indexFieldLength;
+            : $this->indexFieldLength;
     }
     
     /**
@@ -80,15 +79,11 @@ class IndexGenerator_FixedSize extends IndexGenerator
             
         }
         
-        $padding = str_repeat(" ", $this->_indexFieldOffset);
+        $padding = str_repeat(" ", $this->indexFieldOffset);
         
-        for (
-            $key = 0;
-            $key <= $this->getMaximum();
-            $key += $this->getStepSize()
-        ) {
+        for ($key = 0; $key <= $this->getMaximum(); $key += $this->getStepSize()) {
             $indexKey = str_pad($key, $this->getIndexFieldLength());
-            $line = $padding.$indexKey.$this->generateData($key)."\n";
+            $line = $padding . $indexKey . $this->generateData($key) . "\n";
             
             $bytes = @fputs($filepointer, $line);
             if ($bytes != strlen($line)) {
@@ -115,7 +110,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
     protected function createIndex($file)
     {
         return new index\Index_FixedSize(
-            $file, $this->_indexFieldOffset, $this->getIndexFieldLength()
+            $file, $this->indexFieldOffset, $this->getIndexFieldLength()
         );
     }
     
@@ -128,7 +123,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
     {
         return sprintf(
             "%d.%d-%d-%d.txt",
-            $this->_indexFieldOffset,
+            $this->indexFieldOffset,
             $this->getIndexFieldLength(),
             $this->getIndexLength(),
             $this->getStepSize()

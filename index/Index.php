@@ -25,11 +25,11 @@ abstract class Index
     /**
      * @var File
      */
-    private $_file;
+    private $file;
     /**
      * @var KeyReader
      */
-    private $_keyReader;
+    private $keyReader;
     
 
     /**
@@ -49,10 +49,10 @@ abstract class Index
      */
     public function __construct($path)
     {
-        $this->_file = new File($path);
+        $this->file = new File($path);
         
-        $this->_keyReader = new KeyReader();
-        $this->_keyReader->setIndex($this);
+        $this->keyReader = new KeyReader();
+        $this->keyReader->setIndex($this);
     }
 
     /**
@@ -85,7 +85,7 @@ abstract class Index
      */
     public function getFile()
     {
-        return $this->_file;
+        return $this->file;
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class Index
      */
     public function getKeyReader()
     {
-        return $this->_keyReader;
+        return $this->keyReader;
     }
 
 }

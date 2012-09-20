@@ -16,15 +16,14 @@ class BinarySearch
     const DIRECTION_FORWARD  = 1;
     const DIRECTION_BACKWARD = -1;
 
-    private
     /**
      * @var Index
      */
-    $_index,
+    private $index;
     /**
      * @var ByteRange
      */
-    $_range;
+    private $range;
 
     /**
      * Sets the index
@@ -33,8 +32,8 @@ class BinarySearch
      */
     public function __construct(Index $index)
     {
-        $this->_index = $index;
-        $this->_range = new ByteRange(0, $index->getFile()->getFileSize());
+        $this->index = $index;
+        $this->range = new ByteRange(0, $index->getFile()->getFileSize());
     }
     
     /**
@@ -54,44 +53,44 @@ class BinarySearch
     public function search($key)
     {
         // split the range
-        $splitOffset = $this->_getSplitOffset();
+        $splitOffset = $this->getSplitOffset();
         
         // search right side
-        $keys = $this->_index->getKeyReader()->readKeys($splitOffset, self::DIRECTION_FORWARD);
-        $foundKey = $this->_findKey($key, $keys);
+        $keys = $this->index->getKeyReader()->readKeys($splitOffset, self::DIRECTION_FORWARD);
+        $foundKey = $this->findKey($key, $keys);
         // found
         if (! is_null($foundKey)) {
             return $foundKey;
             
         }
         // check if search should terminate
-        if ($this->_isKeyRange($key, $keys)) {
+        if ($this->isKeyRange($key, $keys)) {
             return \reset($keys);
             
         }
         
         // If found keys are smaller continue in the right side
         if (! empty($keys) && \end($keys)->getKey() < $key) {
-            $newOffset = $splitOffset + $this->_index->getKeyReader()->getReadLength();
+            $newOffset = $splitOffset + $this->index->getKeyReader()->getReadLength();
             // Stop if beyond index
-            if ($newOffset >= $this->_index->getFile()->getFileSize()) {
+            if ($newOffset >= $this->index->getFile()->getFileSize()) {
                 return \end($keys);
                 
             }
-            $newLength = $this->_range->getLength()
-                       - ($newOffset - $this->_range->getOffset());
-            $this->_range->setOffset($newOffset);
-            $this->_range->setLength($newLength);
+            $newLength = 
+                $this->range->getLength() - ($newOffset - $this->range->getOffset());
+            $this->range->setOffset($newOffset);
+            $this->range->setLength($newLength);
             return $this->search($key);
             
         }
         
         // Look at the key, which lies in both sides
         $centerKeyOffset = empty($keys)
-            ? $this->_range->getNextByteOffset()
+            ? $this->range->getNextByteOffset()
             : \reset($keys)->getOffset();
-        $keys = $this->_index->getKeyReader()->readKeys($centerKeyOffset, self::DIRECTION_BACKWARD);
-        $foundKey = $this->_findKey($key, $keys);
+        $keys = $this->index->getKeyReader()->readKeys($centerKeyOffset, self::DIRECTION_BACKWARD);
+        $foundKey = $this->findKey($key, $keys);
         // found
         if (! is_null($foundKey)) {
             return $foundKey;
@@ -103,18 +102,18 @@ class BinarySearch
             
         }
         // check if search should terminate
-        if ($this->_isKeyRange($key, $keys)) {
+        if ($this->isKeyRange($key, $keys)) {
             return \reset($keys);
             
         }
         
         // Finally continue searching in the left side
-        $newLength = \reset($keys)->getOffset() - $this->_range->getOffset() - 1;
-        if ($newLength >= $this->_range->getLength()) {
+        $newLength = \reset($keys)->getOffset() - $this->range->getOffset() - 1;
+        if ($newLength >= $this->range->getLength()) {
             return \reset($keys);
             
         }
-        $this->_range->setLength($newLength);
+        $this->range->setLength($newLength);
         return $this->search($key);
     }
     
@@ -129,7 +128,7 @@ class BinarySearch
      * 
      * @return bool
      */
-    private function _isKeyRange($key, Array $keys)
+    private function isKeyRange($key, Array $keys)
     {
         if (empty($keys)) {
             return false;
@@ -144,7 +143,7 @@ class BinarySearch
      * @param array $foundKeys
      * @return Result
      */
-    private function _findKey($key, array $foundKeys)
+    private function findKey($key, Array $foundKeys)
     {
         foreach ($foundKeys as $foundKey) {
             if ($foundKey->getKey() == $key) {
@@ -160,11 +159,11 @@ class BinarySearch
      * 
      * @return int 
      */
-    private function _getSplitOffset()
+    private function getSplitOffset()
     {
-        $blocks = (int) $this->_range->getLength() / $this->_index->getKeyReader()->getReadLength();
+        $blocks = (int) $this->range->getLength() / $this->index->getKeyReader()->getReadLength();
         $centerBlock = (int) $blocks / 2;
-        return $this->_range->getOffset() + $centerBlock * $this->_index->getKeyReader()->getReadLength();
+        return $this->range->getOffset() + $centerBlock * $this->index->getKeyReader()->getReadLength();
     }
 
 }

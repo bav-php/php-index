@@ -17,18 +17,18 @@ class KeyReader
     /**
      * @var int
      */
-    private $_readBlockCount = 1;
+    private $readBlockCount = 1;
     /**
      * @var Index
      */
-    private $_index;
+    private $index;
     
     /**
      * Sets the index
      */
     public function setIndex(Index $index)
     {
-        $this->_index = $index;
+        $this->index = $index;
     }
     
     /**
@@ -58,13 +58,13 @@ class KeyReader
         }
         
         // Read data
-        \fseek($this->_index->getFile()->getFilePointer(), $shiftedOffset);
+        \fseek($this->index->getFile()->getFilePointer(), $shiftedOffset);
         $data = \fread(
-            $this->_index->getFile()->getFilePointer(),
+            $this->index->getFile()->getFilePointer(),
             $this->getReadLength()
         );
         if ($data === false) {
-            if (\feof($this->_index->getFile()->getFilePointer())) {
+            if (\feof($this->index->getFile()->getFilePointer())) {
                 return array();
 
             } else {
@@ -74,7 +74,7 @@ class KeyReader
         }
         
         // Parse the read data
-        $keys = $this->_index->getParser()->parseKeys($data, $shiftedOffset);
+        $keys = $this->index->getParser()->parseKeys($data, $shiftedOffset);
         
         // Read more data if no keys were found
         if (empty($keys)) {
@@ -85,13 +85,13 @@ class KeyReader
             } elseif (
                 $direction == self::DIRECTION_FORWARD
                 && $shiftedOffset + $this->getReadLength()
-                   >= $this->_index->getFile()->getFileSize()
+                   >= $this->index->getFile()->getFileSize()
             ) {
                 return array();
                 
             }
             
-            $this->_increaseReadLength();
+            $this->increaseReadLength();
             return $this->readKeys($offset, $direction);
             
         }
@@ -106,15 +106,15 @@ class KeyReader
      */
     public function getReadLength()
     {
-        return $this->_index->getFile()->getBlockSize() * $this->_readBlockCount;
+        return $this->index->getFile()->getBlockSize() * $this->readBlockCount;
     }
     
     /**
      * Increases the read size
      */
-    private function _increaseReadLength()
+    private function increaseReadLength()
     {
-        $this->_readBlockCount = $this->_readBlockCount * 2;
+        $this->readBlockCount = $this->readBlockCount * 2;
     }
     
 }

@@ -19,15 +19,14 @@ namespace malkusch\index;
 class Index_FixedSize extends Index
 {
     
-    private
     /**
      * @var int
      */
-    $_indexFieldOffset = 0,
+    private $indexFieldOffset = 0;
     /**
      * @var int
      */
-    $_indexFieldLength = 0;
+    private $indexFieldLength = 0;
     
     /**
      * Sets the index file, index offset and the index length
@@ -43,8 +42,8 @@ class Index_FixedSize extends Index
     {
         parent::__construct($path);
         
-        $this->_indexFieldOffset = $indexFieldOffset;
-        $this->_indexFieldLength = $indexFieldLength;
+        $this->indexFieldOffset = $indexFieldOffset;
+        $this->indexFieldLength = $indexFieldLength;
     }
     
    /**
@@ -64,7 +63,7 @@ class Index_FixedSize extends Index
      */
     public function getIndexFieldOffset()
     {
-        return $this->_indexFieldOffset;
+        return $this->indexFieldOffset;
     }
     
     /**
@@ -74,7 +73,7 @@ class Index_FixedSize extends Index
      */
     public function getIndexFieldLength()
     {
-        return $this->_indexFieldLength;
+        return $this->indexFieldLength;
     }
 
 }
