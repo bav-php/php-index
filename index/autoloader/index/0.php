@@ -25,6 +25,7 @@ return array(
     'malkusch\index\index_xml' => '../xml/Index_XML.php',
     'malkusch\index\parser_xml' => '../xml/Parser_XML.php',
     'malkusch\index\binarysearch' => '../binarySearch/BinarySearch.php',
+    'malkusch\index\indexiterator' => '../iterator/IndexIterator.php',
     'malkusch\index\indexexception' => '../exceptions/IndexException.php',
     'malkusch\index\index_fixedsize' => '../fixedSize/Index_FixedSize.php',
     'malkusch\index\parser_fixedsize' => '../fixedSize/Parser_FixedSize.php',
