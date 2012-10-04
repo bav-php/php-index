@@ -19,7 +19,7 @@ require_once __DIR__ . "/autoloader/autoloader.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-abstract class Index
+abstract class Index implements \IteratorAggregate
 {
 
     /**
@@ -53,6 +53,18 @@ abstract class Index
         
         $this->keyReader = new KeyReader();
         $this->keyReader->setIndex($this);
+    }
+    
+    /**
+     * Index iterator
+     * 
+     * You can iterate through the index with this iterator.
+     * 
+     * @return IndexIterator 
+     */
+    public function getIterator()
+    {
+        return new IndexIterator($this);
     }
 
     /**
