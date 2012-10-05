@@ -85,8 +85,6 @@ abstract class Index implements \IteratorAggregate
             return null;
             
         }
-        $result->setData($this->getParser()->getData($result->getOffset()));
-        
         return $result;
     }
 

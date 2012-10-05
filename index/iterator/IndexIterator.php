@@ -4,6 +4,8 @@ namespace malkusch\index;
 
 /**
  * Index Iterator
+ * 
+ * This iterator returns Result objects.
  *
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index

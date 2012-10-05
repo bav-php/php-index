@@ -23,6 +23,7 @@ class AllTests extends \PHPUnit_Framework_TestSuite
         $suite->addTestFile(__DIR__ . "/TestBinarySearch.php");
         $suite->addTestFile(__DIR__ . "/TestIndex.php");
         $suite->addTestFile(__DIR__ . "/TestIndex_XML.php");
+        $suite->addTestFile(__DIR__ . "/TestIterator.php");
 
         return $suite;
     }

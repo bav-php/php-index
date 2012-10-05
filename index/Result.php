@@ -18,14 +18,33 @@ class Result
      * @var String
      */
     private $key = "";
+    
     /**
      * @var String
      */
-    private $data = "";
+    private $data;
+    
     /**
      * @var int
      */
     private $offset = 0;
+    
+    /**
+     * @var Index 
+     */
+    private $index;
+    
+    /**
+     * Sets the index
+     * 
+     * @param Index $index 
+     * 
+     * @return void
+     */
+    public function setIndex(Index $index)
+    {
+        $this->index = $index;
+    }
     
     /**
      * Sets the key
@@ -50,24 +69,16 @@ class Result
     }
     
     /**
-     * Sets the data
-     *
-     * @param String $data 
-     * 
-     * @return void
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-    
-    /**
      * Returns the data
      *
      * @return String
      */
     public function getData()
     {
+        if (is_null($this->data)) {
+            $this->data = $this->index->getParser()->getData($this->getOffset());
+            
+        }
         return $this->data;
     }
     

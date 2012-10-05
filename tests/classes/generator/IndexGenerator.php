@@ -91,6 +91,24 @@ abstract class IndexGenerator
     }
     
     /**
+     * Returns the keys of the generated index
+     * 
+     * @return array
+     */
+    public function getKeys()
+    {
+        $keys = array();
+        for (
+            $key = $this->getMinimum();
+            $key <= $this->getMaximum();
+            $key += $this->getStepSize()
+        ) {
+            $keys[] = $key;
+        }
+        return $keys;
+    }
+    
+    /**
      * Sets the minimum size for data in the index
      *
      * @param int $size Data size

@@ -30,7 +30,7 @@ try  {
     $data = $index->search(10077777);
 
     if ($data != null) {
-        \var_dump($data);
+        echo $data->getData(), "\n";
         
     } else {
         echo "Didn't find key 10020500\n";
@@ -41,7 +41,7 @@ try  {
     $data = $index->search(12345);
     
     if ($data != null) {
-        \var_dump($data);
+        echo $data->getData(), "\n";
         
     } else {
         echo "Didn't find key 12345\n";

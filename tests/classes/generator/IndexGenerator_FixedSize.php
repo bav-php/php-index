@@ -58,6 +58,17 @@ class IndexGenerator_FixedSize extends IndexGenerator
     }
     
     /**
+     * @return string
+     */
+    public function generateData($key)
+    {
+        $padding = str_repeat(" ", $this->indexFieldOffset);
+        $indexKey = str_pad($key, $this->getIndexFieldLength());
+        $data = parent::generateData($key);
+        return $padding . $indexKey . $data;
+    }
+    
+    /**
      * Creates a new Index file
      *
      * @var string $file Path to the index
@@ -79,12 +90,8 @@ class IndexGenerator_FixedSize extends IndexGenerator
             
         }
         
-        $padding = str_repeat(" ", $this->indexFieldOffset);
-        
         for ($key = 0; $key <= $this->getMaximum(); $key += $this->getStepSize()) {
-            $indexKey = str_pad($key, $this->getIndexFieldLength());
-            $line = $padding . $indexKey . $this->generateData($key) . "\n";
-            
+            $line  = $this->generateData($key) . "\n";
             $bytes = @fputs($filepointer, $line);
             if ($bytes != strlen($line)) {
                 throw new IndexTestException_CreateFile(
