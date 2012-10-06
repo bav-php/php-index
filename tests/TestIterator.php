@@ -21,24 +21,45 @@ class TestIterator extends \PHPUnit_Framework_TestCase
      * @param IndexGenerator $generator 
      * @dataProvider provideTestCases
      */
-    public function testIteration(IndexGenerator $generator)
+    public function testKeysInIndex(IndexGenerator $generator)
     {
-        $resultsIterators = new \AppendIterator();
-        
-        // forward
-        $resultsIterators->append($generator->getIndex()->getIterator());
-        
-        //backward
-        $backward = $generator->getIndex()->getIterator();
-        $backward->setDirection(index\KeyReader::DIRECTION_BACKWARD);
-        $resultsIterators->append($backward);
-        
         // each key should be in the generated index
-        foreach ($resultsIterators as $result) {
+        foreach ($generator->getIndex() as $result) {
             $this->assertTrue($generator->isKey($result->getKey()));
-            $this->assertEquals($generator->generateData($result->getKey()), $result->getData());
             
         }
+    }
+    
+    /**
+     * Tests backward iteration
+     * 
+     * @dataProvider provideTestCases
+     */
+    public function testBackward(IndexGenerator $generator)
+    {
+        $keys = array();
+        foreach ($generator->getIndex() as $result) {
+            $keys[] = $result->getKey();
+            
+        }
+        
+        $backwardIterator = $generator->getIndex()->getIterator();
+        $backwardIterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        
+        // test that every found result was in the reversed forward iteration
+        foreach($backwardIterator as $result) {
+            $this->assertEquals(array_pop($keys), $result->getKey());
+            
+        }
+        
+        // No key should be left from the forward iteration
+        $this->assertEmpty(
+            $keys,
+            sprintf(
+                "missing keys (%s)",
+                implode(", ", $keys)
+            )
+        );
     }
     
     /**
@@ -49,7 +70,6 @@ class TestIterator extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllKeys(IndexGenerator $generator)
     {
-        // TODO
         $this->markTestIncomplete();
     }
     
@@ -80,6 +100,11 @@ class TestIterator extends \PHPUnit_Framework_TestCase
         // 1000 entries
         $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(1000);
+        $cases[] = array($generator);
+        
+        // 10000 entries
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
         $cases[] = array($generator);
         
         return $cases;
