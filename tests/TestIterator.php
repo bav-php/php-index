@@ -70,7 +70,13 @@ class TestIterator extends \PHPUnit_Framework_TestCase
      */
     public function testFindAllKeys(IndexGenerator $generator)
     {
-        $this->markTestIncomplete();
+        $expectedKeys = $generator->getKeys();
+        
+        foreach($generator->getIndex() as $result) {
+            $this->assertEquals(array_shift($expectedKeys), $result->getKey());
+            
+        }
+        $this->assertEmpty($expectedKeys);
     }
     
     /**
