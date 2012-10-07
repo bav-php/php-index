@@ -80,6 +80,46 @@ class TestIterator extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * Tests iterating with a different offset
+     * 
+     * @dataProvider provideTestCases
+     */
+    public function testOffset(IndexGenerator $generator)
+    {
+        $index = $generator->getIndex();
+        
+        $expectedResults = array();
+        foreach ($index->getIterator() as $result) {
+            $expectedResults[] = $result;
+            
+        }
+        
+        for (
+            $offset = 0;
+            $offset < $index->getFile()->getFileSize();
+            $offset++
+        ) {
+                
+            // shift $expectedResults after passing the first offset
+            if (isset($expectedResults[0]) && $offset > $expectedResults[0]->getOffset()) {
+                array_shift($expectedResults);
+                
+            }
+                
+            $iterator = $index->getIterator();
+            $iterator->setOffset($offset);
+            
+            $results = array();
+            foreach($iterator as $result) {
+                $results[] = $result;
+                
+            }
+            $this->assertEquals($expectedResults, $results, "not equal at offset $offset");
+            
+        }
+    }
+    
+    /**
      * Provides test cases
      * 
      * @return array
