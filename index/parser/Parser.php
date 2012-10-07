@@ -13,6 +13,9 @@ namespace malkusch\index;
 abstract class Parser
 {
 
+    const HINT_NONE = 0;
+    const HINT_RESULT_BOUNDARY = 1;
+    
     /**
      * @var Index
      */
@@ -25,11 +28,12 @@ abstract class Parser
      *
      * @param string $data   Parseable data
      * @param int    $offset The position where the date came from
+     * @param int    $hints  Parse hints
      *
      * @return array
      * @see Result
      */
-    abstract public function parseKeys($data, $offset);
+    abstract public function parseKeys($data, $offset, $hints = self::HINT_NONE);
     /**
      * Returns the data container which starts at $offset
      *

@@ -105,9 +105,15 @@ class TestIterator extends \PHPUnit_Framework_TestCase
                 array_shift($expectedResults);
                 
             }
-                
+            
             $iterator = $index->getIterator();
-            $iterator->setOffset($offset);
+            if (isset($expectedResults[0]) && $offset == $expectedResults[0]->getOffset()) {
+                $iterator->setOffset($offset, index\Parser::HINT_RESULT_BOUNDARY);
+                
+            } else {
+                $iterator->setOffset($offset);
+                
+            }
             
             $results = array();
             foreach($iterator as $result) {

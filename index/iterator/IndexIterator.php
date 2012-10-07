@@ -19,6 +19,11 @@ class IndexIterator implements \Iterator
     private $offset;
     
     /**
+     * @var int
+     */
+    private $parseHints = Parser::HINT_NONE;
+    
+    /**
      * @var int 
      */
     private $direction = KeyReader::DIRECTION_FORWARD;
@@ -55,11 +60,13 @@ class IndexIterator implements \Iterator
     /**
      * Sets a offset
      *
-     * @param int $offset Offset
+     * @param int $offset     Offset
+     * @param int $parseHints Parse hints
      */
-    public function setOffset($offset)
+    public function setOffset($offset, $parseHints = Parser::HINT_NONE)
     {
         $this->offset = $offset;
+        $this->parseHints = $parseHints;
     }
 
     /**
@@ -85,10 +92,10 @@ class IndexIterator implements \Iterator
         $this->iterator = new \ArrayIterator();
         if (is_null($this->offset)) {
             if ($this->direction == KeyReader::DIRECTION_BACKWARD) {
-                $this->offset = $this->index->getFile()->getFileSize() - 1;
+                $this->setOffset($this->index->getFile()->getFileSize() - 1);
                 
             } else {
-                $this->offset = 0;
+                $this->setOffset(0);
                 
             }
         }
@@ -117,7 +124,8 @@ class IndexIterator implements \Iterator
     {
         $results = $this->index->getKeyReader()->readKeys(
             $this->offset,
-            $this->direction
+            $this->direction,
+            $this->parseHints
         );
         if (empty($results)) {
             return $results;
@@ -135,11 +143,11 @@ class IndexIterator implements \Iterator
         switch ($this->direction) {
 
             case KeyReader::DIRECTION_FORWARD:
-                $this->offset = $end->getOffset() + strlen($end->getData());
+                $this->setOffset($end->getOffset() + strlen($end->getData()));
                 break;
 
             case KeyReader::DIRECTION_BACKWARD:
-                $this->offset = $end->getOffset() - 1;
+                $this->setOffset($end->getOffset() - 1);
                 break;
 
             default:

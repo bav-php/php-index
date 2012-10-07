@@ -19,16 +19,23 @@ class Parser_FixedSize extends Parser
      * $data is parsed for keys. The found keys are returned.
      *
      * @param string $data   Parseable data
-     * @param int    $offset Position where the data came from
+     * @param int    $offset The position where the date came from
+     * @param int    $hints  Parse hints
      *
      * @return array
      * @see Result
      */
-    public function parseKeys($data, $offset)
+    public function parseKeys($data, $offset, $hints = self::HINT_NONE)
     {
+        $isBoundary = ($hints & self::HINT_RESULT_BOUNDARY) == self::HINT_RESULT_BOUNDARY;
+        if ($offset == 0) {
+            $isBoundary = true;
+            
+        }
+        
         $pregExp = \sprintf(
             "/(%s).{%d}(.{%d})/",
-            $offset == 0 ? '^|\n' : '\n',
+            $isBoundary ? '^|\n' : '\n',
             $this->getIndex()->getIndexFieldOffset(),
             $this->getIndex()->getIndexFieldLength()
         );
@@ -55,8 +62,8 @@ class Parser_FixedSize extends Parser
         }
         
         // The first match doesn't begin with \n
-        if ($offset == 0 && ! empty($keys)) {
-            $keys[0]->setOffset(0);
+        if ($isBoundary && ! empty($keys)) {
+            $keys[0]->setOffset($offset);
             
         }
         

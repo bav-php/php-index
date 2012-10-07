@@ -42,7 +42,7 @@ class KeyReader
      * @return array
      * @throws IndexException_IO
      */
-    public function readKeys($offset, $direction)
+    public function readKeys($offset, $direction, $hints = self::HINT_NONE)
     {
         // If reading backwards, shift the offset left
         $shiftedOffset = $direction == self::DIRECTION_BACKWARD
@@ -74,7 +74,7 @@ class KeyReader
         }
         
         // Parse the read data
-        $keys = $this->index->getParser()->parseKeys($data, $shiftedOffset);
+        $keys = $this->index->getParser()->parseKeys($data, $shiftedOffset, $hints);
         
         // Read more data if no keys were found
         if (empty($keys)) {
