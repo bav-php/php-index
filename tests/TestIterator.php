@@ -120,9 +120,23 @@ class TestIterator extends \PHPUnit_Framework_TestCase
                 $results[] = $result;
                 
             }
-            $this->assertEquals($expectedResults, $results, "not equal at offset $offset");
+            
+            $expectedArray = $this->toPrimitiveResultArray($expectedResults);
+            $resultArray = $this->toPrimitiveResultArray($results);
+            
+            $this->assertEquals($expectedArray, $resultArray, "not equal at offset $offset");
             
         }
+    }
+    
+    private function toPrimitiveResultArray($results)
+    {
+        $primitiveResults = array();
+        foreach ($results as $result) {
+            $primitiveResults[] = array($result->getKey(), $result->getOffset(), $result->getData());
+            
+        }
+        return $primitiveResults;
     }
     
     /**
