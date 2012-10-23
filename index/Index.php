@@ -87,6 +87,52 @@ abstract class Index implements \IteratorAggregate
         }
         return $result;
     }
+    
+    /**
+     * Searches a range
+     * 
+     * @param Range $range 
+     * 
+     * @return Traversable
+     */
+    public function searchRange(Range $range)
+    {
+        // find start
+        $binarySearch = new BinarySearch($this);
+        $start = $binarySearch->search($range->getMin());
+        if ($start == null) {
+            return array();
+            
+        }
+        $iterator = $this->getIterator();
+        $iterator->setOffset($start->getOffset(), Parser::HINT_RESULT_BOUNDARY);
+
+        if (! $range->isGreaterThanMinOuterBorder($start->getKey())) {
+            foreach ($iterator as $result) {
+                if ($range->isGreaterThanMinOuterBorder($result->getKey())) {
+                    $start = $result;
+                    break;
+                    
+                }
+            }
+        } else {
+            $iterator->setDirection(KeyReader::DIRECTION_BACKWARD);
+            foreach ($iterator as $result) {
+                if ($range->isGreaterThanMinOuterBorder($result->getKey())) {
+                    $start = $result;
+                    
+                } else {
+                    break;
+                    
+                }
+            }
+            
+        }
+        
+        $iterator = $this->getIterator();
+        $iterator->setOffset($start->getOffset(), Parser::HINT_RESULT_BOUNDARY);
+        return new RangeIterator($iterator, $range);
+    }
 
     /**
      * Returns the index file

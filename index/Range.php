@@ -58,6 +58,22 @@ class Range
     }
     
     /**
+     * Returns true if key is inside this range
+     * 
+     * @param String $key 
+     * 
+     * @return bool
+     */
+    public function contains($key)
+    {
+        if ($this->inclusive && in_array($key, array($this->min, $this->max))) {
+            return true;
+            
+        }
+        return $key > $this->min && $key < $this->max;
+    }
+    
+    /**
      * Returns true if key is inside this range regardless of the minimum border
      * 
      * @param String $key 
