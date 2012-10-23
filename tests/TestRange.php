@@ -1,6 +1,5 @@
 <?php
 
-
 namespace malkusch\index\test;
 use malkusch\index as index;
 
