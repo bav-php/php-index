@@ -24,6 +24,7 @@ class AllTests extends \PHPUnit_Framework_TestSuite
         $suite->addTestFile(__DIR__ . "/TestIndex.php");
         $suite->addTestFile(__DIR__ . "/TestIndex_XML.php");
         $suite->addTestFile(__DIR__ . "/TestIterator.php");
+        $suite->addTestFile(__DIR__ . "/TestRange.php");
 
         return $suite;
     }
