@@ -98,27 +98,39 @@ abstract class Index implements \IteratorAggregate
     public function searchRange(Range $range)
     {
         // find start
+        $start = null;
         $binarySearch = new BinarySearch($this);
-        $start = $binarySearch->search($range->getMin());
-        if ($start == null) {
+        $startHint = $binarySearch->search($range->getMin());
+        if ($startHint == null) {
             return array();
             
         }
         $iterator = $this->getIterator();
-        $iterator->setOffset($start->getOffset(), Parser::HINT_RESULT_BOUNDARY);
+        $iterator->setOffset($startHint->getOffset(), Parser::HINT_RESULT_BOUNDARY);
 
-        if (! $range->isGreaterThanMinOuterBorder($start->getKey())) {
+        if (! $range->contains($startHint->getKey()) && $startHint->getKey() <= $range->getMin()) {
             foreach ($iterator as $result) {
-                if ($range->isGreaterThanMinOuterBorder($result->getKey())) {
+                if ($range->contains($result->getKey())) {
                     $start = $result;
                     break;
                     
                 }
             }
         } else {
+            if ($range->contains($startHint->getKey())) {
+                $start = $startHint;
+                
+            }
             $iterator->setDirection(KeyReader::DIRECTION_BACKWARD);
             foreach ($iterator as $result) {
-                if ($range->isGreaterThanMinOuterBorder($result->getKey())) {
+                // Skip everything which is too big
+                if (! $range->contains($result->getKey() && $result->getKey() >= $range->getMax())) {
+                    continue;
+                    
+                }
+                
+                // shift the start left until no more key is included
+                if ($range->contains($result->getKey())) {
                     $start = $result;
                     
                 } else {
@@ -127,6 +139,10 @@ abstract class Index implements \IteratorAggregate
                 }
             }
             
+        }
+        if (is_null($start)) {
+            return array();
+
         }
         
         $iterator = $this->getIterator();

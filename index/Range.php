@@ -46,18 +46,6 @@ class Range
     }
     
     /**
-     * Returns true if key is inside this range regardless of the maximum border
-     * 
-     * @param String $key 
-     * 
-     * @return bool
-     */
-    public function isGreaterThanMinOuterBorder($key)
-    {
-        return $this->inclusive ? $key >= $this->min : $key > $this->min;
-    }
-    
-    /**
      * Returns true if key is inside this range
      * 
      * @param String $key 
@@ -71,18 +59,6 @@ class Range
             
         }
         return $key > $this->min && $key < $this->max;
-    }
-    
-    /**
-     * Returns true if key is inside this range regardless of the minimum border
-     * 
-     * @param String $key 
-     * 
-     * @return bool
-     */
-    public function isLessesThanMaxOuterBorder($key)
-    {
-        return $this->inclusive ? $key <= $this->max : $key < $this->max;
     }
     
     /**
