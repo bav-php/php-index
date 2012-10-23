@@ -42,7 +42,7 @@ class KeyReader
      * @return array
      * @throws IndexException_IO
      */
-    public function readKeys($offset, $direction, $hints = self::HINT_NONE)
+    public function readKeys($offset, $direction, $hints = Parser::HINT_NONE)
     {
         // If reading backwards, shift the offset left
         $shiftedOffset = $direction == self::DIRECTION_BACKWARD
