@@ -8,13 +8,8 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class RangeIterator implements \Iterator
+class RangeIterator extends \IteratorIterator
 {
-    
-    /**
-     * @var IndexIterator
-     */
-    private $iterator;
     
     /**
      * @var Range
@@ -23,40 +18,17 @@ class RangeIterator implements \Iterator
     
     public function __construct(IndexIterator $iterator, Range $range)
     {
-        $this->iterator = $iterator;
+        parent::__construct($iterator);
         $this->range    = $range;
     }
     
-    /**
-     * @return Result
-     */
-    public function current()
-    {
-        return $this->iterator->current();
-    }
-
-    public function key()
-    {
-        return $this->iterator->key();
-    }
-
-    public function next()
-    {
-        $this->iterator->next();
-    }
-
-    public function rewind()
-    {
-        $this->iterator->rewind();
-    }
-
     public function valid()
     {
-        if (! $this->iterator->valid()) {
+        if (! parent::valid()) {
             return false;
             
         }
-        return $this->range->contains($this->iterator->current()->getKey());
+        return $this->range->contains($this->current()->getKey());
     }
     
 }
