@@ -134,7 +134,19 @@ class IndexIterator implements ResultIterator
         
         // reverse order if iterating backwards
         if ($this->direction == KeyReader::DIRECTION_BACKWARD) {
-            $results = array_reverse($results);
+            // $results = array_reverse($results);
+            
+            // trim results to the offset and reverse the order
+            $revertBackwardResults = array();
+            foreach ($results as $result) {
+                if ($result->getOffset() > $this->offset) {
+                    break;
+                    
+                }
+                array_unshift($revertBackwardResults, $result);
+                
+            }
+            $results = $revertBackwardResults;
 
         }
 
