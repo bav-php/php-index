@@ -90,7 +90,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
             
         }
         
-        for ($key = 0; $key <= $this->getMaximum(); $key += $this->getStepSize()) {
+        for ($key = $this->getMinimum(); $key <= $this->getMaximum(); $key += $this->getStepSize()) {
             $line  = $this->generateData($key) . "\n";
             $bytes = @fputs($filepointer, $line);
             if ($bytes != strlen($line)) {

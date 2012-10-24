@@ -46,6 +46,20 @@ class Range
     }
     
     /**
+     * Returns an empty range
+     * 
+     * An empty range doesn't contain any key
+     * 
+     * @return Range
+     */
+    public static function getEmptyRange()
+    {
+        $range = new self(0, 0);
+        $range->setInclusive(false);
+        return $range;
+    }
+    
+    /**
      * Returns true if key is inside this range
      * 
      * @param String $key 

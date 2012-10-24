@@ -31,4 +31,19 @@ class RangeIterator extends \IteratorIterator
         return $this->range->contains($this->current()->getKey());
     }
     
+    /**
+     * Returns an array with the found keys
+     * 
+     * @return array 
+     */
+    public function getKeys()
+    {
+        $keys = array();
+        foreach ($this as $result) {
+            $keys[] = $result->getKey();
+            
+        }
+        return $keys;
+    }
+    
 }

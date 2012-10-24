@@ -93,19 +93,20 @@ abstract class Index implements \IteratorAggregate
      * 
      * @param Range $range 
      * 
-     * @return Traversable
+     * @return RangeIterator
      */
     public function searchRange(Range $range)
     {
+        $iterator = $this->getIterator();
+        
         // find start
         $start = null;
         $binarySearch = new BinarySearch($this);
         $startHint = $binarySearch->search($range->getMin());
         if ($startHint == null) {
-            return array();
+            return new RangeIterator($iterator, Range::getEmptyRange());
             
         }
-        $iterator = $this->getIterator();
         $iterator->setOffset($startHint->getOffset(), Parser::HINT_RESULT_BOUNDARY);
 
         if (! $range->contains($startHint->getKey()) && $startHint->getKey() <= $range->getMin()) {
@@ -141,7 +142,7 @@ abstract class Index implements \IteratorAggregate
             
         }
         if (is_null($start)) {
-            return array();
+            return new RangeIterator($iterator, Range::getEmptyRange());
 
         }
         

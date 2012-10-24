@@ -205,7 +205,8 @@ abstract class IndexGenerator
      */
     public function getMaximum()
     {
-        return $this->length * $this->stepSize - $this->stepSize;
+        return $this->getMinimum()
+            + ($this->length * $this->stepSize - $this->stepSize);
     }
 
     /**
