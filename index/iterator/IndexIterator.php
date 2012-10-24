@@ -10,7 +10,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class IndexIterator implements \Iterator
+class IndexIterator implements ResultIterator
 {
     
     /**

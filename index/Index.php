@@ -110,6 +110,8 @@ abstract class Index implements \IteratorAggregate
         $iterator->setOffset($startHint->getOffset(), Parser::HINT_RESULT_BOUNDARY);
 
         if (! $range->contains($startHint->getKey()) && $startHint->getKey() <= $range->getMin()) {
+            // shift $startHint higher
+            
             foreach ($iterator as $result) {
                 if ($range->contains($result->getKey())) {
                     $start = $result;
@@ -117,7 +119,10 @@ abstract class Index implements \IteratorAggregate
                     
                 }
             }
+            
         } else {
+            // shift $startHint lower
+            
             if ($range->contains($startHint->getKey())) {
                 $start = $startHint;
                 

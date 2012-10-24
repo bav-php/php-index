@@ -26,16 +26,16 @@ class TestSearchRange extends \PHPUnit_Framework_TestCase
                 $range = new index\Range($min, $min + $length);
                 $range->setInclusive(true);
                 
-                $foundKeys = $index->searchRange($range)->getKeys();
+                $foundKeys = index\IteratorUtil::toKeysArray($index->searchRange($range));
                 
-                $exptectedKeys = array();
+                $expectedKeys = array();
                 for ($key = $range->getMin(); $key <= $range->getMax(); $key++) {
-                    $exptectedKeys[] = $key;
+                    $expectedKeys[] = $key;
                     
                 }
                 
                 $this->assertEquals(
-                    $exptectedKeys,
+                    $expectedKeys,
                     $foundKeys,
                     "failed range[{$range->getMin()}, {$range->getMax()}] for index[{$generator->getMinimum()}, {$generator->getMaximum()}]"
                 );

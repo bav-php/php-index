@@ -8,7 +8,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class RangeIterator extends \IteratorIterator
+class RangeIterator extends \IteratorIterator implements ResultIterator
 {
     
     /**
@@ -29,21 +29,6 @@ class RangeIterator extends \IteratorIterator
             
         }
         return $this->range->contains($this->current()->getKey());
-    }
-    
-    /**
-     * Returns an array with the found keys
-     * 
-     * @return array 
-     */
-    public function getKeys()
-    {
-        $keys = array();
-        foreach ($this as $result) {
-            $keys[] = $result->getKey();
-            
-        }
-        return $keys;
     }
     
 }

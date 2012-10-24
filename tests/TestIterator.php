@@ -31,6 +31,35 @@ class TestIterator extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * Tests defined cases
+     * 
+     * @dataProvider provideTestIteratorCases
+     */
+    public function testIteratorCases(index\IndexIterator $iterator, array $expectedKeys)
+    {
+        $this->assertEquals($expectedKeys, index\IteratorUtil::toKeysArray($iterator));
+    }
+    
+    /**
+     * Test cases 
+     */
+    public function provideTestIteratorCases()
+    {
+        $cases = array();
+        
+        // [0,9] -> [1,0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(1)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(1, 0));
+        
+        return $cases;
+    }
+    
+    /**
      * Tests backward iteration
      * 
      * @dataProvider provideTestCases
@@ -161,6 +190,11 @@ class TestIterator extends \PHPUnit_Framework_TestCase
         // 2 entries
         $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(2);
+        $cases[] = array($generator);
+        
+        // 10 entries
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
         $cases[] = array($generator);
         
         // 1000 entries
