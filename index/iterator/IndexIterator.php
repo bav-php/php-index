@@ -105,7 +105,7 @@ class IndexIterator implements ResultIterator
     {
         if (! $this->iterator->valid()) {
             // terminate at the left end
-            if ($this->direction == KeyReader::DIRECTION_BACKWARD && $this->offset <= 0) {
+            if ($this->direction == KeyReader::DIRECTION_BACKWARD && $this->offset < 0) {
                 return false;
 
             }

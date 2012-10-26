@@ -47,6 +47,15 @@ class TestIterator extends \PHPUnit_Framework_TestCase
     {
         $cases = array();
         
+        // [0,9] -> [0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(0)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(0));
+        
         // [0,9] -> [1,0]
         $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(10);
@@ -55,6 +64,88 @@ class TestIterator extends \PHPUnit_Framework_TestCase
         $iterator->setOffset($index->search(1)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
         $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
         $cases[] = array($iterator, array(1, 0));
+        
+        // [0,9] -> [0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(1)->getOffset() - 1);
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(0));
+        
+        // [0,9] -> [9,0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(9)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+        
+        // [0,9] -> [9,0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+        
+        // [0,9] -> [9,0]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(9)->getOffset() - 1);
+        $iterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
+        $cases[] = array($iterator, array(8, 7, 6, 5, 4, 3, 2, 1, 0));
+        
+        // [0,9] -> [8,9]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(8)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
+        $cases[] = array($iterator, array(8, 9));
+        
+        // [0,9] -> [9]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(9)->getOffset(), index\Parser::HINT_RESULT_BOUNDARY);
+        $cases[] = array($iterator, array(9));
+        
+        // [0,9] -> [9]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(8)->getOffset() + 1);
+        $cases[] = array($iterator, array(9));
+        
+        // [0,9] -> []
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset($index->search(9)->getOffset() + 1);
+        $cases[] = array($iterator, array());
+        
+        // [0,9] -> [0,9]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $cases[] = array($iterator, array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+        
+        // [0,9] -> [1,9]
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10);
+        $index = $generator->getIndex();
+        $iterator = $index->getIterator();
+        $iterator->setOffset(1);
+        $cases[] = array($iterator, array(1, 2, 3, 4, 5, 6, 7, 8, 9));
         
         return $cases;
     }
