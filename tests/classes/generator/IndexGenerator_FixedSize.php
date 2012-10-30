@@ -122,18 +122,20 @@ class IndexGenerator_FixedSize extends IndexGenerator
     }
     
     /**
-     * Returns the index file name without the directory path
+     * Returns the characteristic properties of this index
+     * 
+     * This is used for the file name creation.
      *
-     * @return string
+     * @return array
      */
-    protected function getIndexFileName()
+    protected function getIndexProperties()
     {
-        return sprintf(
-            "%d.%d-%d-%d.txt",
-            $this->indexFieldOffset,
-            $this->getIndexFieldLength(),
-            $this->getIndexLength(),
-            $this->getStepSize()
+        return array_merge(
+            parent::getIndexProperties(),
+            array(
+                $this->indexFieldOffset,
+                $this->getIndexFieldLength(),
+            )
         );
     }
 

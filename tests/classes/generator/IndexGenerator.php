@@ -34,6 +34,7 @@ abstract class IndexGenerator
      * @throws IndexTestException_CreateFile
      */
     abstract protected function createIndexFile($file);
+
     /**
      * Creates a new Index
      *
@@ -42,12 +43,6 @@ abstract class IndexGenerator
      * @return Index
      */
     abstract protected function createIndex($file);
-    /**
-     * Returns the index file name without the directory path
-     *
-     * @return string
-     */
-    abstract protected function getIndexFileName();
 
     /**
      * Returns the path to the test indexes
@@ -91,6 +86,32 @@ abstract class IndexGenerator
     }
     
     /**
+     * Returns the index file name without the directory path
+     *
+     * @return string
+     */
+    protected function getIndexFileName()
+    {
+        return md5(implode(",", $this->getIndexProperties()));
+    }
+    
+    /**
+     * Returns the characteristic properties of this index
+     * 
+     * This is used for the file name creation.
+     *
+     * @return array
+     */
+    protected function getIndexProperties()
+    {
+        return array(
+            $this->getIndexLength(),
+            $this->getStepSize(),
+            $this->getMinimumDataSize()
+        );
+    }
+    
+    /**
      * Returns the keys of the generated index
      * 
      * @return array
@@ -118,6 +139,16 @@ abstract class IndexGenerator
     public function setMinimumDataSize($size)
     {
         $this->minDataSize = $size;
+    }
+    
+    /**
+     * Returns the minimum size for data in the index
+     *
+     * @return int
+     */
+    public function getMinimumDataSize()
+    {
+        return $this->minDataSize;
     }
 
     /**

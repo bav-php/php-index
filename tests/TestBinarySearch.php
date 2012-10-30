@@ -22,22 +22,23 @@ class TestBinarySearch extends AbstractTest
      */
     public function testIncreaseSectorCount()
     {
-        $generator = new IndexGenerator_XML();
+        $generator = new IndexGenerator_FixedSize();
+        $oldReadLength = $generator->getIndex()->getKeyReader()->getReadLength();
+        $expectedFactor = 3;
+        
         $generator->setIndexLength(100);
-        $generator->setMinimumDataSize(
-            $generator->getIndex()->getFile()->getBlockSize() * 3
-        );
+        $generator->setMinimumDataSize($oldReadLength * $expectedFactor);
+        
+        
 
         $index = $generator->getIndex();
         $binarySearch = new index\BinarySearch($index);
-        $binarySearch->search(3);
-
-        $reflectedReadBlockCount
-            = new \ReflectionProperty($binarySearch, "_readBlockCount");
-        $reflectedReadBlockCount->setAccessible(true);
-        $readBlockCount = $reflectedReadBlockCount->getValue($binarySearch);
-
-        $this->assertGreaterThanOrEqual(3, $readBlockCount);
+        $this->assertNotEmpty($binarySearch->search(3)->getData());
+        
+        $this->assertGreaterThanOrEqual(
+            $oldReadLength * $expectedFactor,
+            $index->getKeyReader()->getReadLength()
+        );
     }
 
 }
