@@ -29,12 +29,8 @@ class TestIndex_FixedSize extends AbstractTest
         
         $index = $generator->getIndex();
         for ($key = 0; $key < $length; $key++) {
-            $counter = new SplitCounter();
             $result  = $index->search($key);
             $this->assertNotNull($result, "key: $key");
-            
-            $counter->stopCounting();
-            $this->assertComplexity($generator, $counter);
             $this->assertRegExp(
                 '/data_' . $key . '_.*\$/s',
                 $result->getData(),
@@ -47,8 +43,8 @@ class TestIndex_FixedSize extends AbstractTest
     public function provideTestIndexConfiguration()
     {
         $cases = array();
-        $lengths = array(1, 10, 100, index\File::DEFAULT_BLOCK_SIZE * 24);
-        $offsets = array(0, 1, index\File::DEFAULT_BLOCK_SIZE * 24);
+        $lengths = array(1, 10, 100, index\File::DEFAULT_BLOCK_SIZE * 12);
+        $offsets = array(0, 1, index\File::DEFAULT_BLOCK_SIZE * 12);
         foreach ($lengths as $length) {
             foreach ($offsets as $offset) {
                 $indexFieldLength = 1;

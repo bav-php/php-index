@@ -40,5 +40,33 @@ class TestBinarySearch extends AbstractTest
             $index->getKeyReader()->getReadLength()
         );
     }
+    
+    /**
+     * Test for the search complexity
+     * 
+     * @dataProvider provideTestComplexity
+     */
+    public function testComplexity(IndexGenerator $generator)
+    {
+        $index = $generator->getIndex();
+        foreach ($index as $result) {
+            $counter = new SplitCounter();
+            $index->search($result->getKey());
+            $counter->stopCounting();
+            $this->assertComplexity($generator, $counter);
+            
+        }
+    }
+    
+    public function provideTestComplexity()
+    {
+        $cases = array();
+        
+        $generator = new IndexGenerator_FixedSize();
+        $generator->setIndexLength(10000);
+        $cases[] = array($generator);
+        
+        return $cases;
+    }
 
 }
