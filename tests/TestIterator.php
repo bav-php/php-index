@@ -19,7 +19,7 @@ class TestIterator extends \PHPUnit_Framework_TestCase
      * Tests that every found key is in the index
      * 
      * @param IndexGenerator $generator 
-     * @dataProvider provideTestCases
+     * @dataProvider provideLargerTestCases
      */
     public function testKeysInIndex(IndexGenerator $generator)
     {
@@ -153,7 +153,7 @@ class TestIterator extends \PHPUnit_Framework_TestCase
     /**
      * Tests backward iteration
      * 
-     * @dataProvider provideTestCases
+     * @dataProvider provideLargerTestCases
      */
     public function testBackward(IndexGenerator $generator)
     {
@@ -186,7 +186,7 @@ class TestIterator extends \PHPUnit_Framework_TestCase
      * Tests that every key of the index will be found
      * 
      * @param IndexGenerator $generator 
-     * @dataProvider provideTestCases
+     * @dataProvider provideLargerTestCases
      */
     public function testFindAllKeys(IndexGenerator $generator)
     {
@@ -260,14 +260,13 @@ class TestIterator extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Provides test cases
+     * Provides test cases with small indices
      * 
      * @return array
      */
     public function provideTestCases()
     {
         $cases = array();
-        
         // empty Index
         $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(0);
@@ -287,6 +286,18 @@ class TestIterator extends \PHPUnit_Framework_TestCase
         $generator = new IndexGenerator_FixedSize();
         $generator->setIndexLength(10);
         $cases[] = array($generator);
+        
+        return $cases;
+    }
+    
+    /**
+     * Provides test cases above 1000
+     * 
+     * @return array
+     */
+    public function provideLargerTestCases()
+    {
+        $cases = $this->provideTestCases();
         
         // 1000 entries
         $generator = new IndexGenerator_FixedSize();
