@@ -19,15 +19,7 @@ class AllTests extends \PHPUnit_Framework_TestSuite
     public static function suite()
     {
         $suite = new self();
-
-        $suite->addTestFile(__DIR__ . "/TestBinarySearch.php");
-        $suite->addTestFile(__DIR__ . "/TestIndex.php");
-        $suite->addTestFile(__DIR__ . "/TestIndex_FixedSize.php");
-        $suite->addTestFile(__DIR__ . "/TestIndex_XML.php");
-        $suite->addTestFile(__DIR__ . "/TestIterator.php");
-        $suite->addTestFile(__DIR__ . "/TestRange.php");
-        $suite->addTestFile(__DIR__ . "/TestSearchRange.php");
-
+        $suite->addTestFiles(new \GlobIterator(__DIR__ . "/Test*.php"));
         return $suite;
     }
 
