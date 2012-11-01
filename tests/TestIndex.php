@@ -34,7 +34,7 @@ class TestIndex extends AbstractTest
                 . " length: {$generator->getIndexLength()}"
             );
             $expected = preg_quote($generator->generateData($key));
-            // $this->assertRegExp("/$expected/", $result->getData());
+            $this->assertRegExp("/$expected/", $result->getData());
             
         }
     }
@@ -65,7 +65,7 @@ class TestIndex extends AbstractTest
             foreach ($steps as $step) {
                 $generator = new IndexGenerator_FixedSize();
                 $generator->setIndexLength($length);
-                $generator->setStepSize(2);
+                $generator->setStepSize($step);
                 $cases[] = array($generator);
                 
             }
