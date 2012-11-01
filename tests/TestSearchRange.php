@@ -67,7 +67,7 @@ class TestSearchRange extends \PHPUnit_Framework_TestCase
         $cases[] = array($generator);
         
         $generator = new IndexGenerator_FixedSize();
-        $generator->setIndexLength(1000);
+        $generator->setIndexLength(200);
         $cases[] = array($generator);
         
         return $cases;

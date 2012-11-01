@@ -25,15 +25,7 @@ class TestIndex extends AbstractTest
     public function testSearch(IndexGenerator $generator)
     {
         $index = $generator->getIndex();
-        for (
-            $key = $generator->getMinimum();
-            $key <= $generator->getMaximum();
-            $key++
-        ) {
-            if (! $generator->isKey($key)) {
-                continue;
-                
-            }
+        foreach ($generator->getKeys() as $key) {
             $result = $index->search($key);
             $this->assertNotNull(
                 $result,
@@ -60,17 +52,12 @@ class TestIndex extends AbstractTest
             1,
             2,
             10,
-            IndexGenerator::getBlockSize() - 1,
             IndexGenerator::getBlockSize(),
-            IndexGenerator::getBlockSize() + 1,
-            IndexGenerator::getBlockSize() * 4,
         );
         
         $steps = array(
             1,
-            2,
             3,
-            5,
             IndexGenerator::getBlockSize()
         );
         
