@@ -12,3 +12,5 @@ Usage
 
 Have a look at the examples/ folder. You can find there examples for each
 implemented index structure.
+
+[![Build Status](https://travis-ci.org/malkusch/php-index.svg)](https://travis-ci.org/malkusch/php-index)
