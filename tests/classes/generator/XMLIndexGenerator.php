@@ -9,7 +9,7 @@ use malkusch\index as index;
  *
  * @author Markus Malkusch <markus@malkusch.de>
  * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
- * @link     https://github.com/malkusch/php-index
+ * @license GPL
  */
 class XMLIndexGenerator extends IndexGenerator
 {

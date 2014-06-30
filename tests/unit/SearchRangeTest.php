@@ -11,7 +11,7 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
  *
  * @author Markus Malkusch <markus@malkusch.de>
  * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
- * @link     https://github.com/malkusch/php-index
+ * @license GPL
  */
 class SearchRangeTest extends \PHPUnit_Framework_TestCase
 {
