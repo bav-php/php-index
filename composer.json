@@ -9,9 +9,12 @@
         {
             "name": "Markus Malkusch",
             "email": "markus@malkusch.de",
-            "homepage": "http://www.malkusch.de/"
+            "homepage": "http://markus.malkusch.de"
         }
     ],
+    "autoload": {
+        "files": ["index/autoloader/autoloader.php"]
+    },
     "require": {
         "php": ">=5.3.0"
     }
