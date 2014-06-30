@@ -3,8 +3,7 @@
 namespace malkusch\index\test;
 use malkusch\index as index;
 
-require_once __DIR__ . "/classes/autoloader/autoloader.php";
-require_once __DIR__ . "/../index/Index.php";
+require_once __DIR__ . "/../classes/AbstractTest.php";
 
 /**
  * Test for Range
@@ -12,7 +11,7 @@ require_once __DIR__ . "/../index/Index.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class TestRange extends \PHPUnit_Framework_TestCase
+class RangeTest extends \PHPUnit_Framework_TestCase
 {
     
     /**

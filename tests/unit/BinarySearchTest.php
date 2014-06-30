@@ -3,7 +3,7 @@
 namespace malkusch\index\test;
 use malkusch\index as index;
 
-require_once __DIR__ . "/classes/AbstractTest.php";
+require_once __DIR__ . "/../classes/AbstractTest.php";
 
 /**
  * Tests the class BinarySearch
@@ -12,7 +12,7 @@ require_once __DIR__ . "/classes/AbstractTest.php";
  * @link     https://github.com/malkusch/php-index
  * @see      BinarySearch
  */
-class TestBinarySearch extends AbstractTest
+class BinarySearchTest extends AbstractTest
 {
 
     /**

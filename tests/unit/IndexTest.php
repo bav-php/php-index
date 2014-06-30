@@ -3,7 +3,7 @@
 namespace malkusch\index\test;
 use malkusch\index as index;
 
-require_once __DIR__ . "/classes/AbstractTest.php";
+require_once __DIR__ . "/../classes/AbstractTest.php";
 
 /**
  * Tests an index
@@ -11,7 +11,7 @@ require_once __DIR__ . "/classes/AbstractTest.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class TestIndex extends AbstractTest
+class IndexTest extends AbstractTest
 {
 
     /**

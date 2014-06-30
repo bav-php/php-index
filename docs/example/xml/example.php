@@ -14,8 +14,8 @@ use malkusch\index\Index_XML;
 use malkusch\index\IndexException_IO;
 use malkusch\index\IndexException_ReadData;
 
-// Include the index and its autoloader
-require_once __DIR__ . "/../../index/Index.php";
+// Include the autoloader
+require_once __DIR__ . "/../../../autoloader/autoloader.php";
 
 try  {
     // Define the index

@@ -1,3 +1,2 @@
 nbproject
-tests/index
-tests/sandbox.php
+tests/unit/sandbox.php
