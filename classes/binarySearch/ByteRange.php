@@ -85,5 +85,4 @@ class ByteRange
     {
         return $this->offset + $this->length;
     }
-
 }

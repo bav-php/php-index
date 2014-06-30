@@ -30,5 +30,4 @@ class RangeIterator extends \IteratorIterator implements ResultIterator
         }
         return $this->range->contains($this->current()->getKey());
     }
-    
 }

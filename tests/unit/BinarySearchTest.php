@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -22,7 +23,7 @@ class BinarySearchTest extends AbstractTest
      */
     public function testIncreaseSectorCount()
     {
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $oldReadLength = $generator->getIndex()->getKeyReader()->getReadLength();
         $expectedFactor = 3;
         
@@ -62,11 +63,10 @@ class BinarySearchTest extends AbstractTest
     {
         $cases = array();
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10000);
         $cases[] = array($generator);
         
         return $cases;
     }
-
 }

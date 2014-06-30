@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 /**
@@ -44,5 +45,4 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
             \count($counter)
         );
     }
-
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -63,7 +64,7 @@ class IndexTest extends AbstractTest
         
         foreach ($lengths as $length) {
             foreach ($steps as $step) {
-                $generator = new IndexGenerator_FixedSize();
+                $generator = new FixedSizeIndexGenerator();
                 $generator->setIndexLength($length);
                 $generator->setStepSize($step);
                 $cases[] = array($generator);
@@ -107,7 +108,7 @@ class IndexTest extends AbstractTest
         
         foreach ($lengths as $length) {
             // Fail searching for MIN(index) - 1
-            $generator = new IndexGenerator_FixedSize();
+            $generator = new FixedSizeIndexGenerator();
             $generator->setIndexLength($length);
             $generator->getIndex();
             $cases[] = array(
@@ -116,7 +117,7 @@ class IndexTest extends AbstractTest
             );
             
             // Fail searching for MAX(index) + 1
-            $generator = new IndexGenerator_FixedSize();
+            $generator = new FixedSizeIndexGenerator();
             $generator->setIndexLength($length);
             $generator->getIndex();
             $cases[] = array(
@@ -125,7 +126,7 @@ class IndexTest extends AbstractTest
             );
             
             // Fail searching for any missing key inside the index range
-            $generator = new IndexGenerator_FixedSize();
+            $generator = new FixedSizeIndexGenerator();
             $generator->setIndexLength($length);
             $generator->setStepSize(2);
             $generator->getIndex();
@@ -138,5 +139,4 @@ class IndexTest extends AbstractTest
         
         return $cases;
     }
-
 }

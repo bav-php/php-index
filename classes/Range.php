@@ -114,5 +114,4 @@ class Range
     {
         return $this->min;
     }
-    
 }

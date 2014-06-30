@@ -8,7 +8,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class IndexException_IO_FileExists extends IndexException_IO
+class FileExistsIOException extends IOIndexException
 {
 
 }

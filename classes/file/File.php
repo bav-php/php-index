@@ -38,8 +38,8 @@ class File
      *
      * @param string $path Index file
      *
-     * @throws IndexException_IO_FileExists
-     * @throws IndexException_IO
+     * @throws FileExistsIOException
+     * @throws IOIndexException
      */
     public function __construct($path)
     {
@@ -49,11 +49,11 @@ class File
         $this->filePointer = @\fopen($path, "rb");
         if (! \is_resource($this->filePointer)) {
             if (! \file_exists($path)) {
-                throw new IndexException_IO_FileExists("'$path' doesn't exist.");
+                throw new FileExistsIOException("'$path' doesn't exist.");
 
             }
             $errors = \error_get_last();
-            throw new IndexException_IO($errors["message"]);
+            throw new IOIndexException($errors["message"]);
 
         }
         
@@ -67,7 +67,7 @@ class File
         // Read the size
         $this->size = \filesize($path);
         if ($this->size === false) {
-            throw new IndexException_IO("Can't read size of '$path'");
+            throw new IOIndexException("Can't read size of '$path'");
             
         }
     }
@@ -111,5 +111,4 @@ class File
     {
         return $this->blocksize;
     }
-    
 }

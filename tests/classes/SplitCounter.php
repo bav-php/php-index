@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 /**
@@ -78,5 +79,4 @@ class SplitCounter implements \Countable
     {
         \unregister_tick_function(array($this, "countSplit"));
     }
-
 }

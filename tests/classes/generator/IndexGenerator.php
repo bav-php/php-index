@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 /**
@@ -31,7 +32,7 @@ abstract class IndexGenerator
      * @var string $file Path to the index
      *
      * @return void
-     * @throws IndexTestException_CreateFile
+     * @throws CreateFileIndexTestException
      */
     abstract protected function createIndexFile($file);
 
@@ -59,7 +60,7 @@ abstract class IndexGenerator
      *
      * @return string
      */
-    private static function _getTestIndexVarPath()
+    private static function getTestIndexVarPath()
     {
         return self::getTestIndexPath() . "/var/";
     }
@@ -72,8 +73,7 @@ abstract class IndexGenerator
     public static function getBlockSize()
     {
         $stat = \stat(self::getTestIndexPath());
-        if (
-            \is_array($stat)
+        if (\is_array($stat)
             && isset($stat["blksize"])
             && $stat["blksize"] > 0
         ) {
@@ -119,11 +119,10 @@ abstract class IndexGenerator
     public function getKeys()
     {
         $keys = array();
-        for (
-            $key = $this->getMinimum();
-            $key <= $this->getMaximum();
-            $key += $this->getStepSize()
-        ) {
+        for ($key = $this->getMinimum();
+                $key <= $this->getMaximum();
+                $key += $this->getStepSize()) {
+                
             $keys[] = $key;
         }
         return $keys;
@@ -261,11 +260,11 @@ abstract class IndexGenerator
      * Gets an Index
      *
      * @return Index
-     * @throws IndexTestException_CreateFile
+     * @throws CreateFileIndexTestException
      */
     public function getIndex()
     {
-        $file = self::_getTestIndexVarPath() . "/" . $this->getIndexFileName();
+        $file = self::getTestIndexVarPath() . "/" . $this->getIndexFileName();
         
         // Create only once the index file
         if (! \file_exists($file)) {
@@ -275,5 +274,4 @@ abstract class IndexGenerator
         
         return $this->createIndex($file);
     }
-
 }

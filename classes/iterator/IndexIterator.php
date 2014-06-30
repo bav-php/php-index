@@ -207,5 +207,4 @@ class IndexIterator implements ResultIterator
         }
         $results = $reducedResults;
     }
-    
 }

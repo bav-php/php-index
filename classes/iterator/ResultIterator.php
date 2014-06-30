@@ -17,5 +17,4 @@ interface ResultIterator extends \Iterator
      * @return Result 
      */
     public function current();
-
 }

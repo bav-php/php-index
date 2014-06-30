@@ -43,7 +43,7 @@ abstract class Parser
      *
      * @return string
      * @see Parser::parseKeys()
-     * @throws IndexException_ReadData
+     * @throws ReadDataIndexException
      */
     abstract public function getData($offset);
 
@@ -66,5 +66,4 @@ abstract class Parser
     {
         return $this->index;
     }
-
 }

@@ -8,7 +8,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Parser_XML extends Parser
+class XmlParser extends Parser
 {
 
     /**
@@ -23,7 +23,7 @@ class Parser_XML extends Parser
     /**
      * Returns the index
      *
-     * @return Index_XML
+     * @return XmlIndex
      */
     public function getIndex()
     {
@@ -74,7 +74,7 @@ class Parser_XML extends Parser
      * @param int $offset Offset of the XML container
      *
      * @return string
-     * @throws IndexException_ReadData
+     * @throws ReadDataIndexException
      */
     public function getData($offset)
     {
@@ -86,7 +86,7 @@ class Parser_XML extends Parser
 
         if (! \is_resource($parser)) {
             $error = \error_get_last();
-            throw new IndexException_ReadData(
+            throw new ReadDataIndexException(
                 "Could not create a xml parser: $error[message]"
             );
 
@@ -99,9 +99,8 @@ class Parser_XML extends Parser
         );
 
         \fseek($filePointer, $offset);
-        while (
-            \is_null($this->parserPosition)
-            && $chunk = \fread($filePointer, $this->getIndex()->getFile()->getBlockSize())
+        while (\is_null($this->parserPosition)
+                    && $chunk = \fread($filePointer, $this->getIndex()->getFile()->getBlockSize())
         ) {
             $data .= $chunk;
             \xml_parse($parser, $chunk);
@@ -111,7 +110,7 @@ class Parser_XML extends Parser
         \xml_parser_free($parser);
 
         if (\is_null($this->parserPosition)) {
-            throw new IndexException_ReadData("Did not read any data");
+            throw new ReadDataIndexException("Did not read any data");
 
         }
         return \substr($data, 0, $this->parserPosition);
@@ -128,7 +127,7 @@ class Parser_XML extends Parser
      *
      * @return void
      * @see xml_set_element_handler()
-     * @see Parser_XML::getData()
+     * @see XmlParser::getData()
      */
     public function onStartElement($parser, $element, array $attributes)
     {
@@ -144,8 +143,8 @@ class Parser_XML extends Parser
      * @param string   $element Element name
      *
      * @return void
-     * @throws IndexException_ReadData
-     * @see Parser_XML::getData()
+     * @throws ReadDataIndexException
+     * @see XmlParser::getData()
      * @see xml_set_element_handler()
      */
     public function onEndElement($parser, $element)
@@ -156,12 +155,11 @@ class Parser_XML extends Parser
 
         }
         if ($element != \strtoupper($this->getIndex()->getElement())) {
-            throw new IndexException_ReadData(
+            throw new ReadDataIndexException(
                 "Unexpected closing of element '$element'."
             );
 
         }
         $this->parserPosition = \xml_get_current_byte_index($parser);
     }
-
 }

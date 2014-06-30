@@ -10,16 +10,16 @@
  * @link      https://github.com/malkusch/php-index
  */
 
-use malkusch\index\Index_XML;
-use malkusch\index\IndexException_IO;
-use malkusch\index\IndexException_ReadData;
+use malkusch\index\XMLIndex;
+use malkusch\index\IOIndexException;
+use malkusch\index\ReadDataIndexException;
 
 // Include the autoloader
 require_once __DIR__ . "/../../../autoloader/autoloader.php";
 
-try  {
+try {
     // Define the index
-    $index = new Index_XML(
+    $index = new XMLIndex(
         __DIR__ . "/index.xml", // Index file
         "container", // Container element
         "index" // Index attribute of the container element
@@ -29,12 +29,12 @@ try  {
     $data = $index->search(1234);
     
     if ($data != null) {
-       /*
-        * The returned data is the XML as string. You can use SimpleXML to browse
-        * the data.
-        *
-        * @see SimpleXML
-        */
+        /*
+         * The returned data is the XML as string. You can use SimpleXML to browse
+         * the data.
+         *
+         * @see SimpleXML
+         */
         $xml = new \SimpleXMLElement($data);
         \var_dump((string) $xml->payload);
         
@@ -47,12 +47,12 @@ try  {
         
     }
 
-// IO Error during opening or reading the index
-} catch (IndexException_IO $e) {
+} catch (IOIndexException $e) {
+    // IO Error during opening or reading the index
     echo $e->getMessage(), "\n";
 
-// Error while reading found data
-} catch (IndexException_ReadData $e) {
+} catch (ReadDataIndexException $e) {
+    // Error while reading found data
     echo $e->getMessage(), "\n";
 
 }

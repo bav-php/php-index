@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -90,5 +91,4 @@ class RangeTest extends \PHPUnit_Framework_TestCase
             array(-1, 1),
         );
     }
-    
 }

@@ -8,7 +8,7 @@ namespace malkusch\index;
  * @author Markus Malkusch <markus@malkusch.de>
  * @link   https://github.com/malkusch/php-index
  */
-class KeyReader 
+class KeyReader
 {
     
     const DIRECTION_FORWARD  = 1;
@@ -40,7 +40,7 @@ class KeyReader
      * @param int $offset
      * @param int $direction
      * @return array
-     * @throws IndexException_IO
+     * @throws IOIndexException
      */
     public function readKeys($offset, $direction, $hints = Parser::HINT_NONE)
     {
@@ -52,7 +52,7 @@ class KeyReader
         //TODO shift to a blocksize chunk
         
         // Don't shift too far
-        if ($shiftedOffset < 0 ) {
+        if ($shiftedOffset < 0) {
             $shiftedOffset = 0;
 
         }
@@ -68,7 +68,7 @@ class KeyReader
                 return array();
 
             } else {
-                throw new IndexException_IO("Could not read file");
+                throw new IOIndexException("Could not read file");
 
             }
         }
@@ -82,10 +82,9 @@ class KeyReader
             if ($direction == self::DIRECTION_BACKWARD && $shiftedOffset == 0) {
                 return array();
                 
-            } elseif (
-                $direction == self::DIRECTION_FORWARD
-                && $shiftedOffset + $this->getReadLength()
-                   >= $this->index->getFile()->getFileSize()
+            } elseif ($direction == self::DIRECTION_FORWARD
+                        && $shiftedOffset + $this->getReadLength()
+                           >= $this->index->getFile()->getFileSize()
             ) {
                 return array();
                 
@@ -116,5 +115,4 @@ class KeyReader
     {
         $this->readBlockCount = $this->readBlockCount * 2;
     }
-    
 }

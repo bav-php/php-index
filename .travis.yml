@@ -7,4 +7,5 @@ php:
 
 script:
     - phpunit tests/unit
+    - phpcs --standard=PSR2 classes/ docs/
 

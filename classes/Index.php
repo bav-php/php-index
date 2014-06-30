@@ -37,8 +37,8 @@ abstract class Index implements \IteratorAggregate
      *
      * @param string $path Index file
      *
-     * @throws IndexException_IO_FileExists
-     * @throws IndexException_IO
+     * @throws FileExistsIOException
+     * @throws IOIndexException
      */
     public function __construct($path)
     {
@@ -68,7 +68,7 @@ abstract class Index implements \IteratorAggregate
      * @param string $key Key in the index
      *
      * @return Result
-     * @throws IndexException_ReadData
+     * @throws ReadDataIndexException
      */
     public function search($key)
     {
@@ -168,5 +168,4 @@ abstract class Index implements \IteratorAggregate
     {
         return $this->keyReader;
     }
-
 }

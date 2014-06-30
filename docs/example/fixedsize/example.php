@@ -11,16 +11,16 @@
  * @link      https://github.com/malkusch/php-index
  */
 
-use malkusch\index\Index_FixedSize;
-use malkusch\index\IndexException_IO;
-use malkusch\index\IndexException_ReadData;
+use malkusch\index\FixedSizeIndex;
+use malkusch\index\IOIndexException;
+use malkusch\index\ReadDataIndexException;
 
 // Include the autoloader
 require_once __DIR__ . "/../../../autoloader/autoloader.php";
 
-try  {
+try {
     // Define the index
-    $index = new Index_FixedSize(
+    $index = new FixedSizeIndex(
         __DIR__ . "/index.txt", // Index file
         0, // offset of the index in each line
         8 // length of the index
@@ -48,12 +48,12 @@ try  {
         
     }
 
-// IO Error during opening or reading the index
-} catch (IndexException_IO $e) {
+} catch (IOIndexException $e) {
+    // IO Error during opening or reading the index
     echo $e->getMessage(), "\n";
 
-// Error while reading found data
-} catch (IndexException_ReadData $e) {
+} catch (ReadDataIndexException $e) {
+    // Error while reading found data
     echo $e->getMessage(), "\n";
 
 }

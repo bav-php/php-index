@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -49,27 +50,26 @@ class SearchRangeTest extends \PHPUnit_Framework_TestCase
     {
         $cases = array();
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(0);
         $cases[] = array($generator);
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(1);
         $cases[] = array($generator);
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $cases[] = array($generator);
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(100);
         $cases[] = array($generator);
         
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(200);
         $cases[] = array($generator);
         
         return $cases;
     }
-    
 }

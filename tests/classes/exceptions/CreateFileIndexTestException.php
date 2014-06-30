@@ -8,7 +8,7 @@ namespace malkusch\index\test;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class IndexTestException_CreateFile extends IndexTestException
+class CreateFileIndexTestException extends IndexTestException
 {
 
 }

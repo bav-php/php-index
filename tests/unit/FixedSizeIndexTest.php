@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -12,7 +13,7 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Index_FixedSizeTest extends AbstractTest
+class FixedSizeIndexTest extends AbstractTest
 {
     
     /**
@@ -22,7 +23,7 @@ class Index_FixedSizeTest extends AbstractTest
      */
     public function testIndexConfiguration($offset, $indexFieldLength, $length)
     {
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexFieldOffset($offset);
         $generator->setIndexFieldLength($indexFieldLength);
         $generator->setIndexLength($length);
@@ -56,5 +57,4 @@ class Index_FixedSizeTest extends AbstractTest
         }
         return $cases;
     }
-    
 }

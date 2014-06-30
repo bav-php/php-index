@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 /**
@@ -9,7 +10,7 @@ use malkusch\index as index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class IndexGenerator_FixedSize extends IndexGenerator
+class FixedSizeIndexGenerator extends IndexGenerator
 {
     
     /**
@@ -74,13 +75,13 @@ class IndexGenerator_FixedSize extends IndexGenerator
      * @var string $file Path to the index
      *
      * @return void
-     * @throws IndexTestException_CreateFile
+     * @throws CreateFileIndexTestException
      */
     protected function createIndexFile($file)
     {
         $filepointer = @fopen($file, "w");
         if (!is_resource($filepointer)) {
-            throw new IndexTestException_CreateFile(
+            throw new CreateFileIndexTestException(
                 sprintf(
                     "Could not open '%s': %s",
                     $file,
@@ -94,7 +95,7 @@ class IndexGenerator_FixedSize extends IndexGenerator
             $line  = $this->generateData($key) . "\n";
             $bytes = @fputs($filepointer, $line);
             if ($bytes != strlen($line)) {
-                throw new IndexTestException_CreateFile(
+                throw new CreateFileIndexTestException(
                     sprintf(
                         "Could not write line '%s': %s",
                         $line,
@@ -112,12 +113,14 @@ class IndexGenerator_FixedSize extends IndexGenerator
      *
      * @var string $file Path to the index
      *
-     * @return Index_FixedSize
+     * @return FixedSizeIndex
      */
     protected function createIndex($file)
     {
-        return new index\Index_FixedSize(
-            $file, $this->indexFieldOffset, $this->getIndexFieldLength()
+        return new index\FixedSizeIndex(
+            $file,
+            $this->indexFieldOffset,
+            $this->getIndexFieldLength()
         );
     }
     
@@ -138,5 +141,4 @@ class IndexGenerator_FixedSize extends IndexGenerator
             )
         );
     }
-
 }

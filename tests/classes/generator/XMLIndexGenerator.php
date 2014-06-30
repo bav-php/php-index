@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 /**
@@ -9,7 +10,7 @@ use malkusch\index as index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class IndexGenerator_XML extends IndexGenerator
+class XMLIndexGenerator extends IndexGenerator
 {
 
     /**
@@ -81,11 +82,11 @@ class IndexGenerator_XML extends IndexGenerator
      *
      * @var string $file Path to the index
      *
-     * @return Index_XML
+     * @return XmlIndex
      */
     protected function createIndex($file)
     {
-        return new index\Index_XML($file, $this->element, $this->attribute);
+        return new index\XmlIndex($file, $this->element, $this->attribute);
     }
 
     /**
@@ -105,7 +106,7 @@ class IndexGenerator_XML extends IndexGenerator
      * @var string $file Path to the index
      *
      * @return void
-     * @throws IndexTestException_CreateFile
+     * @throws CreateFileIndexTestException
      */
     protected function createIndexFile($file)
     {
@@ -135,11 +136,10 @@ class IndexGenerator_XML extends IndexGenerator
 
         $bytes = $document->save($file);
         if ($bytes === false) {
-            throw new IndexTestException_CreateFile(
+            throw new CreateFileIndexTestException(
                 "Could not create test file"
             );
 
         }
     }
-
 }

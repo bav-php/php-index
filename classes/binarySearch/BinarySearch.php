@@ -48,7 +48,7 @@ class BinarySearch
      * @param string $key Key
      *
      * @return Result
-     * @throws IndexException_IO
+     * @throws IOIndexException
      */
     public function search($key)
     {
@@ -77,7 +77,7 @@ class BinarySearch
                 return \end($keys);
                 
             }
-            $newLength = 
+            $newLength =
                 $this->range->getLength() - ($newOffset - $this->range->getOffset());
             $this->range->setOffset($newOffset);
             $this->range->setLength($newLength);
@@ -165,5 +165,4 @@ class BinarySearch
         $centerBlock = (int) $blocks / 2;
         return $this->range->getOffset() + $centerBlock * $this->index->getKeyReader()->getReadLength();
     }
-
 }

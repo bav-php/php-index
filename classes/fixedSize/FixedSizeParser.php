@@ -3,14 +3,14 @@
 namespace malkusch\index;
 
 /**
- * Index_FixedSize parser
+ * FixedSizeIndex parser
  *
  * The parser finds key and data in the index.
  *
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Parser_FixedSize extends Parser
+class FixedSizeParser extends Parser
 {
 
     /**
@@ -79,7 +79,7 @@ class Parser_FixedSize extends Parser
      *
      * @return string
      * @see Parser::parseKeys()
-     * @throws IndexException_ReadData
+     * @throws ReadDataIndexException
      */
     public function getData($offset)
     {
@@ -89,7 +89,7 @@ class Parser_FixedSize extends Parser
         
         if ($data === false) {
             $error = \error_get_last();
-            throw new IndexException_ReadData("Failed to read data: $error");
+            throw new ReadDataIndexException("Failed to read data: $error");
             
         }
         
@@ -105,11 +105,10 @@ class Parser_FixedSize extends Parser
     /**
      * Returns the index
      *
-     * @return Index_FixedSize
+     * @return FixedSizeIndex
      */
     public function getIndex()
     {
         return parent::getIndex();
     }
-
 }

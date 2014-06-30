@@ -16,7 +16,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Index_FixedSize extends Index
+class FixedSizeIndex extends Index
 {
     
     /**
@@ -35,8 +35,8 @@ class Index_FixedSize extends Index
      * @param string $indexFieldOffset Index field offset
      * @param string $indexFieldLength Index field length
      *
-     * @throws IndexException_IO_FileExists
-     * @throws IndexException_IO
+     * @throws FileExistsIOException
+     * @throws IOIndexException
      */
     public function __construct($path, $indexFieldOffset, $indexFieldLength)
     {
@@ -46,14 +46,14 @@ class Index_FixedSize extends Index
         $this->indexFieldLength = $indexFieldLength;
     }
     
-   /**
+    /**
      * Returns a parser for this index
      *
-     * @return Parser_FixedSize
+     * @return FixedSizeParser
      */
     public function getParser()
     {
-        return new Parser_FixedSize($this);
+        return new FixedSizeParser($this);
     }
     
     /**
@@ -75,5 +75,4 @@ class Index_FixedSize extends Index
     {
         return $this->indexFieldLength;
     }
-
 }

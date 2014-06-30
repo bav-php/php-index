@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -47,7 +48,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases = array();
         
         // [0,9] -> [0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -56,7 +57,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(0));
         
         // [0,9] -> [1,0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -65,7 +66,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(1, 0));
         
         // [0,9] -> [0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -74,7 +75,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(0));
         
         // [0,9] -> [9,0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -83,7 +84,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
         
         // [0,9] -> [9,0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -91,7 +92,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
         
         // [0,9] -> [9,0]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -100,7 +101,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(8, 7, 6, 5, 4, 3, 2, 1, 0));
         
         // [0,9] -> [8,9]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -108,7 +109,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(8, 9));
         
         // [0,9] -> [9]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -116,7 +117,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(9));
         
         // [0,9] -> [9]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -124,7 +125,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array(9));
         
         // [0,9] -> []
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -132,14 +133,14 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases[] = array($iterator, array());
         
         // [0,9] -> [0,9]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
         $cases[] = array($iterator, array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
         
         // [0,9] -> [1,9]
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $index = $generator->getIndex();
         $iterator = $index->getIterator();
@@ -166,7 +167,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $backwardIterator->setDirection(index\KeyReader::DIRECTION_BACKWARD);
         
         // test that every found result was in the reversed forward iteration
-        foreach($backwardIterator as $result) {
+        foreach ($backwardIterator as $result) {
             $this->assertEquals(array_pop($keys), $result->getKey());
             
         }
@@ -191,7 +192,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
     {
         $expectedKeys = $generator->getKeys();
         
-        foreach($generator->getIndex() as $result) {
+        foreach ($generator->getIndex() as $result) {
             $this->assertEquals(array_shift($expectedKeys), $result->getKey());
             
         }
@@ -213,11 +214,9 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
             
         }
         
-        for (
-            $offset = 0;
+        for ($offset = 0;
             $offset < $index->getFile()->getFileSize();
-            $offset++
-        ) {
+            $offset++) {
                 
             // shift $expectedResults after passing the first offset
             if (isset($expectedResults[0]) && $offset > $expectedResults[0]->getOffset()) {
@@ -235,7 +234,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
             }
             
             $results = array();
-            foreach($iterator as $result) {
+            foreach ($iterator as $result) {
                 $results[] = $result;
                 
             }
@@ -267,22 +266,22 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
     {
         $cases = array();
         // empty Index
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(0);
         $cases[] = array($generator);
         
         // 1 entry
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(1);
         $cases[] = array($generator);
         
         // 2 entries
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(2);
         $cases[] = array($generator);
         
         // 10 entries
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10);
         $cases[] = array($generator);
         
@@ -299,16 +298,15 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
         $cases = $this->provideTestCases();
         
         // 1000 entries
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(1000);
         $cases[] = array($generator);
         
         // 10000 entries
-        $generator = new IndexGenerator_FixedSize();
+        $generator = new FixedSizeIndexGenerator();
         $generator->setIndexLength(10000);
         $cases[] = array($generator);
         
         return $cases;
     }
-    
 }

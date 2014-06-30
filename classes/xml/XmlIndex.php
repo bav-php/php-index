@@ -24,7 +24,7 @@ namespace malkusch\index;
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Index_XML extends Index
+class XmlIndex extends Index
 {
     
     /**
@@ -43,8 +43,8 @@ class Index_XML extends Index
      * @param string $element   Container name
      * @param string $attribute Index attribute name
      *
-     * @throws IndexException_IO_FileExists
-     * @throws IndexException_IO
+     * @throws FileExistsIOException
+     * @throws IOIndexException
      */
     public function __construct($path, $element, $attribute)
     {
@@ -77,11 +77,10 @@ class Index_XML extends Index
     /**
      * Returns a parser for this index
      *
-     * @return Parser_XML
+     * @return XmlParser
      */
     public function getParser()
     {
-        return new Parser_XML($this);
+        return new XmlParser($this);
     }
-
 }

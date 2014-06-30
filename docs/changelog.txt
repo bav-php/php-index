@@ -2,6 +2,8 @@ Version 0.1.0 - not yet released
 --------------------------------
     - changed project structure
 
+    - renamed classed to meet PSR2
+
 
 Version 0.0.1 - June 30, 2014
 -----------------------------

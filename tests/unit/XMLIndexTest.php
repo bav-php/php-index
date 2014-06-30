@@ -1,6 +1,7 @@
 <?php
 
 namespace malkusch\index\test;
+
 use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
@@ -12,19 +13,19 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
  * @author   Markus Malkusch <markus@malkusch.de>
  * @link     https://github.com/malkusch/php-index
  */
-class Index_XMLTest extends AbstractTest
+class XmlIndexTest extends AbstractTest
 {
 
     /**
      * Tests finding every key
      *
-     * @param IndexGenerator_XML $generator Index generator
+     * @param XMLIndexGenerator $generator Index generator
      *
      * @dataProvider provideTestSearch
      */
     /*
     public function testSearch(
-        IndexGenerator_XML $generator
+        XMLIndexGenerator $generator
     ) {
         $index = $generator->getIndex();
         for ($key = 0; $key < $generator->getIndexLength(); $key++) {
@@ -45,11 +46,11 @@ class Index_XMLTest extends AbstractTest
             // Data
             $this->assertEquals(
                 1,
-                count($xml->{IndexGenerator_XML::ELEMENT_PAYLOAD})
+                count($xml->{XMLIndexGenerator::ELEMENT_PAYLOAD})
             );
             $this->assertRegExp(
                 "/^data_{$key}_.+$/",
-                (string) $xml->{IndexGenerator_XML::ELEMENT_PAYLOAD}[0]
+                (string) $xml->{XMLIndexGenerator::ELEMENT_PAYLOAD}[0]
             );
 
         }
@@ -70,27 +71,26 @@ class Index_XMLTest extends AbstractTest
     {
         $cases  = array();
 
-        $generator = new IndexGenerator_XML();
+        $generator = new XMLIndexGenerator();
         $generator->setIndexLength(10000);
         $generator->formatOutput(true);
         $cases[] = array($generator);
 
-        $generator = new IndexGenerator_XML();
+        $generator = new XMLIndexGenerator();
         $generator->setIndexLength(10000);
         $generator->formatOutput(false);
         $cases[] = array($generator);
 
-        $generator = new IndexGenerator_XML();
+        $generator = new XMLIndexGenerator();
         $generator->setIndexLength(1);
         $generator->formatOutput(true);
         $cases[] = array($generator);
 
-        $generator = new IndexGenerator_XML();
+        $generator = new XMLIndexGenerator();
         $generator->setIndexLength(1);
         $generator->formatOutput(false);
         $cases[] = array($generator);
 
         return $cases;
     }
-
 }
