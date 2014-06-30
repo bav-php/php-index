@@ -25,4 +25,18 @@ Use [Composer](https://getcomposer.org/):
 Have a look at the docs/examples/ folder. You can find there examples for each
 implemented index structure.
 
+
+# License and author
+
+This project is free and under GPL (see docs/gpl.txt). So do what ever you want.
+But it would be nice to leave a note about the authors.
+
+Responsable for this project is Markus Malkusch <markus@malkusch.de>.
+
+## Donations
+
+If you like BAV and feel generous donate a few Bitcoins here:
+[1335STSwu9hST4vcMRppEPgENMHD2r1REK](bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK)
+
+
 [![Build Status](https://travis-ci.org/malkusch/php-index.svg)](https://travis-ci.org/malkusch/php-index)

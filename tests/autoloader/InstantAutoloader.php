@@ -23,7 +23,8 @@
  *
  * @category  PHP
  * @package   Autoloader
- * @author    Markus Malkusch <markus@malkusch.de>
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @copyright 2009 - 2010 Markus Malkusch
  * @license   http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version   SVN: $Id$
@@ -54,7 +55,8 @@ if (class_exists("malkusch\autoloader\InstantAutoloader")) {
  *
  * @category PHP
  * @package  Autoloader
- * @author   Markus Malkusch <markus@malkusch.de>
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @license  http://php-autoloader.malkusch.de/en/license/ GPL 3
  * @version  Release: 1.12
  * @link     http://php-autoloader.malkusch.de/en/

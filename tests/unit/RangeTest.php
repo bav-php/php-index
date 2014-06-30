@@ -9,7 +9,8 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
 /**
  * Test for Range
  *
- * @author   Markus Malkusch <markus@malkusch.de>
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @link     https://github.com/malkusch/php-index
  */
 class RangeTest extends \PHPUnit_Framework_TestCase

@@ -10,7 +10,8 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
 /**
  * Tests the xml index
  *
- * @author   Markus Malkusch <markus@malkusch.de>
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @link     https://github.com/malkusch/php-index
  */
 class FixedSizeIndexTest extends AbstractTest

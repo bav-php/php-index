@@ -8,7 +8,8 @@ namespace malkusch\index;
  * A search returns a Result object with the data, key and the offset
  * in the index file.
  *
- * @author   Markus Malkusch <markus@malkusch.de>
+ * @author Markus Malkusch <markus@malkusch.de>
+ * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @link     https://github.com/malkusch/php-index
  */
 class Result
