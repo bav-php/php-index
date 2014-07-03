@@ -5,6 +5,10 @@ php:
     - 5.4
     - 5.3
 
+install:
+    - pyrus install pear/PHP_CodeSniffer
+    - phpenv rehash
+
 script:
     - phpunit tests/unit
     - phpcs --standard=PSR2 classes/ docs/
