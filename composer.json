@@ -9,7 +9,8 @@
         {
             "name": "Markus Malkusch",
             "email": "markus@malkusch.de",
-            "homepage": "http://markus.malkusch.de"
+            "homepage": "http://markus.malkusch.de",
+            "role": "Developer"
         }
     ],
     "autoload": {

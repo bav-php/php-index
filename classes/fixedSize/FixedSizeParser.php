@@ -14,18 +14,6 @@ namespace malkusch\index;
 class FixedSizeParser extends Parser
 {
 
-    /**
-     * Returns an array with FoundKey objects
-     *
-     * $data is parsed for keys. The found keys are returned.
-     *
-     * @param string $data   Parseable data
-     * @param int    $offset The position where the date came from
-     * @param int    $hints  Parse hints
-     *
-     * @return array
-     * @see Result
-     */
     public function parseKeys($data, $offset, $hints = self::HINT_NONE)
     {
         $isBoundary = ($hints & self::HINT_RESULT_BOUNDARY) == self::HINT_RESULT_BOUNDARY;

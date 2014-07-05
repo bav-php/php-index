@@ -23,7 +23,7 @@ abstract class Parser
     private $index;
 
     /**
-     * Returns an array with FoundKey objects
+     * Returns Results with keys.
      *
      * $data is parsed for keys. The found keys are returned.
      *
@@ -31,10 +31,10 @@ abstract class Parser
      * @param int    $offset The position where the date came from
      * @param int    $hints  Parse hints
      *
-     * @return array
-     * @see Result
+     * @return Result[]
      */
     abstract public function parseKeys($data, $offset, $hints = self::HINT_NONE);
+    
     /**
      * Returns the data container which starts at $offset
      *
