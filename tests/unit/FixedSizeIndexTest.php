@@ -6,7 +6,6 @@ use malkusch\index as index;
 
 require_once __DIR__ . "/../classes/AbstractTest.php";
 
-
 /**
  * Tests the xml index
  *
@@ -16,6 +15,32 @@ require_once __DIR__ . "/../classes/AbstractTest.php";
  */
 class FixedSizeIndexTest extends AbstractTest
 {
+    
+    /**
+     * Tests getLineLength()
+     * 
+     * @dataProvider provideTestGetLineLength
+     * @see FixedSizeIndex::getLineLength()
+     */
+    public function testGetLineLength($expectedLineLength, $file)
+    {
+        $index = new index\FixedSizeIndex($file, 0, 1);
+        $this->assertEquals($expectedLineLength, $index->getLineLength());
+    }
+    
+    /**
+     * Test cases for testGetLineLength()
+     * 
+     * @return array
+     * @see testGetLineLength()
+     */
+    public function provideTestGetLineLength()
+    {
+        return array(
+            array(5, __DIR__ . "/../index/fixedSize/one-line.txt"),
+            array(6, __DIR__ . "/../index/fixedSize/simple.txt")
+        );
+    }
     
     /**
      * Tests finding all keys with different index configurations 

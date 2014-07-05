@@ -24,10 +24,16 @@ class FixedSizeIndex extends Index
      * @var int
      */
     private $indexFieldOffset = 0;
+    
     /**
      * @var int
      */
     private $indexFieldLength = 0;
+    
+    /**
+     * @var int
+     */
+    private $lineLength;
     
     /**
      * Sets the index file, index offset and the index length
@@ -45,6 +51,25 @@ class FixedSizeIndex extends Index
         
         $this->indexFieldOffset = $indexFieldOffset;
         $this->indexFieldLength = $indexFieldLength;
+        
+        $dummyLine = fgets($this->getFile()->getFilePointer());
+        if (! $dummyLine) {
+            throw new IOIndexException("Could not read line length");
+
+        }
+        $this->lineLength = strlen($dummyLine);
+    }
+    
+    /**
+     * Returns the length of a line
+     * 
+     * A line includes the line break.
+     * 
+     * @return int
+     */
+    public function getLineLength()
+    {
+        return $this->lineLength;
     }
     
     /**
