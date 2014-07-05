@@ -9,7 +9,7 @@ namespace malkusch\index;
  * @link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations
  * @license GPL
  */
-class IOIndexException extends Exception
+class IOIndexException extends IndexException
 {
 
 }
