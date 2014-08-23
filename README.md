@@ -28,9 +28,7 @@ implemented index structure.
 
 # License and author
 
-This project is free and under GPL (see docs/gpl.txt). So do what ever you want.
-But it would be nice to leave a note about the authors.
-
+This project is free and under WTFPL.
 Responsable for this project is Markus Malkusch <markus@malkusch.de>.
 
 ## Donations
