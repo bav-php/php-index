@@ -14,7 +14,7 @@ Use [Composer](https://getcomposer.org/):
 ```json
 {
     "require": {
-        "malkusch/php-index": "0.0.1"
+        "malkusch/php-index": "~0.1"
     }
 }
 ```
